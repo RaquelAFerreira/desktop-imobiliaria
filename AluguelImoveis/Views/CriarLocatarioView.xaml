@@ -1,0 +1,28 @@
+<Window x:Class="AluguelImoveis.Views.CriarLocatarioView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cadastrar Locatário" Height="250" Width="400">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Text="Nome Completo:" Grid.Row="0" Grid.Column="0" Margin="5"/>
+        <TextBox Name="NomeCompletoBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
+
+        <TextBlock Text="Telefone:" Grid.Row="1" Grid.Column="0" Margin="5"/>
+        <TextBox Name="TelefoneBox" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+        <TextBlock Text="CPF:" Grid.Row="2" Grid.Column="0" Margin="5"/>
+        <TextBox Name="CPFBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+        <Button Content="Salvar" Grid.Row="3" Grid.ColumnSpan="2" Margin="5" Height="30" Click="Salvar_Click"/>
+    </Grid>
+</Window>
