@@ -23,6 +23,12 @@
         <TextBlock Text="CPF:" Grid.Row="2" Grid.Column="0" Margin="5"/>
         <TextBox Name="CPFBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
 
-        <Button Content="Salvar" Grid.Row="3" Grid.ColumnSpan="2" Margin="5" Height="30" Click="Salvar_Click"/>
+        <Button x:Name="SalvarButton" 
+            Content="Salvar" 
+            Grid.Row="3" 
+            Grid.ColumnSpan="2" 
+            Margin="5" 
+            Height="30" 
+            Click="Salvar_Click"/>
     </Grid>
 </Window>

@@ -1,6 +1,7 @@
 using AluguelImoveis.Models;
 using AluguelImoveis.Services;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace AluguelImoveis.Views
@@ -16,9 +17,9 @@ namespace AluguelImoveis.Views
         {
             var locatario = new Locatario
             {
-                NomeCompleto = NomeCompletoBox.Text,
-                Telefone = TelefoneBox.Text,
-                CPF = CPFBox.Text
+                NomeCompleto = NomeCompletoBox.Text.Trim(),
+                Telefone = Regex.Replace(TelefoneBox.Text, @"[^\d]", ""),
+                CPF = Regex.Replace(CPFBox.Text, @"[^\d]", "")
             };
 
             try

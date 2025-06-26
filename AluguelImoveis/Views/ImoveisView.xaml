@@ -1,13 +1,31 @@
 <Window x:Class="AluguelImoveis.Views.ImoveisView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Imóveis" Height="300" Width="426">
+        Title="Imóveis" Height="400" Width="650">
     <Grid>
-        <ListView Name="ImoveisList" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Content="Cadastrar Imóvel"
+                Margin="10"
+                Width="150"
+                Height="30"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Click="Cadastrar_Click"
+                Grid.Row="0"/>
+
+        <ListView Name="ImoveisList"
+                  Margin="10"
+                  Grid.Row="1">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Endereco}" Width="200"/>
-                    <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Tipo}" Width="200"/>
+                    <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Endereco}" Width="300"/>
+                    <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Tipo}" Width="150"/>
+                    <GridViewColumn Header="Valor" DisplayMemberBinding="{Binding ValorLocacao}" Width="80"/>
+                    <GridViewColumn Header="Disponível" DisplayMemberBinding="{Binding Disponivel}" Width="80"/>
                 </GridView>
             </ListView.View>
         </ListView>
