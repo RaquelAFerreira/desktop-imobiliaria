@@ -15,7 +15,17 @@ namespace AluguelImoveis.Views
         private async Task LoadDataAsync()
         {
             var imoveis = await ApiService.GetImoveisAsync();
-            ImoveisList.ItemsSource = imoveis;
+            Dispatcher.Invoke(() =>
+            {
+                ImoveisList.ItemsSource = imoveis;
+            });
+        }
+
+        private void Cadastrar_Click(object sender, RoutedEventArgs e)
+        {
+            var form = new CriarImovelView();
+            form.ShowDialog();
+            _ = LoadDataAsync();
         }
     }
 }

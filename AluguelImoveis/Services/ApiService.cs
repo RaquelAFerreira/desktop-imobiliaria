@@ -25,7 +25,12 @@ namespace AluguelImoveis.Services
 
         public static async Task<HttpResponseMessage> CriarLocatarioAsync(Locatario locatario)
         {
-            return await _client.PostAsJsonAsync("locatarios", locatario);
+            return await _client.PostAsJsonAsync("Locatarios", locatario);
+        }
+
+        public static async Task<HttpResponseMessage> CriarImovelAsync(Imovel imovel)
+        {
+            return await _client.PostAsJsonAsync("Imoveis", imovel);
         }
     }
 }
