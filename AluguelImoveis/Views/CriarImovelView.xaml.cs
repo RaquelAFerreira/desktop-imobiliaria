@@ -34,6 +34,7 @@ namespace AluguelImoveis.Views
             {
                 var imovel = new Imovel
                 {
+                    Codigo = CodigoBox.Text,
                     Tipo = TipoBox.Text,
                     Endereco = EnderecoBox.Text.Trim(),
                     ValorLocacao = decimal.Parse(ValorLocacaoBox.Text),
