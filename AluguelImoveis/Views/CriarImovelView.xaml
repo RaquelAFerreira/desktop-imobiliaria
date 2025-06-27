@@ -12,17 +12,20 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="115"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="Tipo:" Grid.Row="0" Grid.Column="0" Margin="5"/>
-        <ComboBox Name="TipoBox"
-          Grid.Row="0"
-          Grid.Column="1"
-          Margin="5"
-          DisplayMemberPath="Description"
-          SelectedValuePath="Value"/>
+        
+        <ComboBox Name="TipoBox" Grid.Row="0" Grid.Column="1" Margin="5">
+            <ComboBoxItem Content="Apartamento"/>
+            <ComboBoxItem Content="Casa"/>
+            <ComboBoxItem Content="Sobrado"/>
+            <ComboBoxItem Content="Kitnet"/>
+            <ComboBoxItem Content="Loja Comercial"/>
+            <ComboBoxItem Content="Galpão Industrial"/>
+        </ComboBox>
 
         <TextBlock Text="Endereço:" Grid.Row="1" Grid.Column="0" Margin="5"/>
         <TextBox Name="EnderecoBox" Grid.Row="1" Grid.Column="1" Margin="5"/>
@@ -30,7 +33,7 @@
         <TextBlock Text="Valor Locação:" Grid.Row="2" Grid.Column="0" Margin="5"/>
         <TextBox Name="ValorLocacaoBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
 
-        <TextBlock Text="Disponível:" Grid.Row="3" Grid.Column="0" Margin="5"/>
+        <TextBlock Text="Aluguel Disponível:" Grid.Row="3" Grid.Column="0" Margin="5"/>
         <CheckBox Name="DisponivelBox" Grid.Row="3" Grid.Column="1" Margin="5" 
                   IsChecked="True" HorizontalAlignment="Left"/>
 

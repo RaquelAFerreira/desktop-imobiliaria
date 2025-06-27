@@ -1,0 +1,42 @@
+<Window x:Class="AluguelImoveis.Views.AlugueisView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:AluguelImoveis.Converters"
+        Title="Aluguéis" Height="450" Width="750">
+    <Window.Resources>
+        <local:ConverterBoolSimNao x:Key="SimNaoConverter" />
+    </Window.Resources>
+    <Grid>
+        <!-- Define duas linhas: uma para o botão, outra para o ListView -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0" HorizontalAlignment="Left">
+            <Button Content="Mostrar Apenas Ativos" Width="160" Height="30" Click="FiltrarAtivos_Click"/>
+        </StackPanel>
+
+        <ListView Name="AlugueisList" Margin="10" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Início" Width="100">
+                        <GridViewColumn.DisplayMemberBinding>
+                            <Binding Path="DataInicio" StringFormat="dd/MM/yyyy"/>
+                        </GridViewColumn.DisplayMemberBinding>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Término" Width="100">
+                        <GridViewColumn.DisplayMemberBinding>
+                            <Binding Path="DataTermino" StringFormat="dd/MM/yyyy"/>
+                        </GridViewColumn.DisplayMemberBinding>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Total Dias" DisplayMemberBinding="{Binding TotalDias}" Width="70"/>
+                    <GridViewColumn Header="Dias Restantes" DisplayMemberBinding="{Binding DiasRestantes}" Width="90"/>
+                    <GridViewColumn Header="Locatário" DisplayMemberBinding="{Binding Locatario.NomeCompleto}" Width="150"/>
+                    <GridViewColumn Header="Imóvel" DisplayMemberBinding="{Binding Imovel.Codigo}" Width="100"/>
+                    <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Imovel.Endereco}" Width="150"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

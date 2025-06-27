@@ -1,6 +1,8 @@
 using AluguelImoveis.Models;
 using AluguelImoveis.Services;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -15,6 +17,11 @@ namespace AluguelImoveis.Views
 
         private async void Salvar_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidarCampos())
+            {
+                return;
+            }
+
             var locatario = new Locatario
             {
                 NomeCompleto = NomeCompletoBox.Text.Trim(),
@@ -22,24 +29,98 @@ namespace AluguelImoveis.Views
                 CPF = Regex.Replace(CPFBox.Text, @"[^\d]", "")
             };
 
+            SalvarButton.IsEnabled = false;
+            SalvarButton.Content = "Salvando...";
+
             try
             {
                 HttpResponseMessage response = await ApiService.CriarLocatarioAsync(locatario);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    MessageBox.Show("Locatário cadastrado com sucesso!");
-                    Close();
-                }
-                else
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar locatário:\n{error}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                await ProcessarResposta(response, locatario);
+            }
+            catch (HttpRequestException httpEx)
+            {
+                MessageBox.Show($"Falha na conexão com a API:\n{httpEx.Message}",
+                              "Erro de Conexão",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro inesperado:\n{ex.Message}", "Exceção", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erro inesperado:\n{ex.Message}",
+                              "Erro",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Error);
+            }
+            finally
+            {
+                // Reabilitar botão após a operação
+                SalvarButton.IsEnabled = true;
+                SalvarButton.Content = "Salvar";
+            }
+        }
+        private bool ValidarCampos()
+        {
+            if (string.IsNullOrWhiteSpace(NomeCompletoBox.Text))
+            {
+                MessageBox.Show("O campo 'Nome Completo' é obrigatório.",
+                              "Validação",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Warning);
+                NomeCompletoBox.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(TelefoneBox.Text))
+            {
+                MessageBox.Show("O campo 'Telefone' é obrigatório.",
+                              "Validação",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Warning);
+                TelefoneBox.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(CPFBox.Text))
+            {
+                MessageBox.Show("O campo 'CPF' é obrigatório.",
+                              "Validação",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Warning);
+                CPFBox.Focus();
+                return false;
+            }
+
+            return true;
+        }
+        private async Task ProcessarResposta(HttpResponseMessage response, Locatario imovel)
+        {
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.Created:
+                    var imovelCriado = await response.Content.ReadFromJsonAsync<Imovel>();
+                    MessageBox.Show($"Locatário cadastrado com sucesso!",
+                                  "Sucesso",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Information);
+                    DialogResult = true;
+                    Close();
+                    break;
+
+                case HttpStatusCode.BadRequest:
+                    var detalhesErro = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Dados inválidos:\n{detalhesErro}",
+                                  "Erro de Validação",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Warning);
+                    break;
+                default:
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Erro ao cadastrar locatário:\n{response.StatusCode}\n{errorContent}",
+                                  "Erro na API",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Error);
+                    break;
             }
         }
     }

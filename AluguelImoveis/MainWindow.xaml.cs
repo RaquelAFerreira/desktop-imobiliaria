@@ -20,5 +20,11 @@ namespace AluguelImoveis
             var view = new Views.ImoveisView();
             view.Show();
         }
+
+        private void ListarAlugueis_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new Views.AlugueisView();
+            view.Show();
+        }
     }
 }
