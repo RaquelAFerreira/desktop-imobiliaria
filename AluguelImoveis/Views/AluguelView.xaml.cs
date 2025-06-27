@@ -2,10 +2,11 @@ using AluguelImoveis.Models.DTOs;
 using AluguelImoveis.Services;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace AluguelImoveis.Views
 {
-    public partial class AlugueisView : Window
+    public partial class AlugueisView : Page
     {
         public AlugueisView()
         {
@@ -30,6 +31,13 @@ namespace AluguelImoveis.Views
             {
                 MessageBox.Show($"Erro ao carregar aluguéis ativos: {ex.Message}");
             }
+        }
+
+        private void CadastrarAluguel_Click(object sender, RoutedEventArgs e)
+        {
+            var view = new CriarAluguelView();
+            view.ShowDialog();
+            _ = LoadDataAsync(); // Recarrega os dados após fechar
         }
     }
 }

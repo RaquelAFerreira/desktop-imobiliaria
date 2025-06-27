@@ -1,19 +1,21 @@
-<Window x:Class="AluguelImoveis.Views.AlugueisView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:AluguelImoveis.Converters"
-        Title="Aluguéis" Height="450" Width="750">
-    <Window.Resources>
+<Page x:Class="AluguelImoveis.Views.AlugueisView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:AluguelImoveis.Converters"
+      Title="Aluguéis">
+
+    <Page.Resources>
         <local:ConverterBoolSimNao x:Key="SimNaoConverter" />
-    </Window.Resources>
+    </Page.Resources>
+
     <Grid>
-        <!-- Define duas linhas: uma para o botão, outra para o ListView -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0" HorizontalAlignment="Left">
+            <Button Content="Cadastrar Aluguel" Width="120" Height="30" Margin="0,0,10,0" Click="CadastrarAluguel_Click"/>
             <Button Content="Mostrar Apenas Ativos" Width="160" Height="30" Click="FiltrarAtivos_Click"/>
         </StackPanel>
 
@@ -39,4 +41,4 @@
             </ListView.View>
         </ListView>
     </Grid>
-</Window>
+</Page>

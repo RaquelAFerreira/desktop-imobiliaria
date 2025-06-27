@@ -1,7 +1,8 @@
-<Window x:Class="AluguelImoveis.Views.LocatariosView" 
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Locatários" Height="400" Width="500">
+<Page x:Class="AluguelImoveis.Views.LocatariosView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Locatários">
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -29,4 +30,4 @@
             </ListView.View>
         </ListView>
     </Grid>
-</Window>
+</Page>

@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Controls;
 
 namespace AluguelImoveis
 {
@@ -11,20 +12,17 @@ namespace AluguelImoveis
 
         private void ListarLocatarios_Click(object sender, RoutedEventArgs e)
         {
-            var view = new Views.LocatariosView();
-            view.Show();
+            MainFrame.Navigate(new Views.LocatariosView()); // <-- Page
         }
 
         private void ListarImoveis_Click(object sender, RoutedEventArgs e)
         {
-            var view = new Views.ImoveisView();
-            view.Show();
+            MainFrame.Navigate(new Views.ImoveisView());
         }
 
         private void ListarAlugueis_Click(object sender, RoutedEventArgs e)
         {
-            var view = new Views.AlugueisView();
-            view.Show();
+            MainFrame.Navigate(new Views.AlugueisView());
         }
     }
 }
