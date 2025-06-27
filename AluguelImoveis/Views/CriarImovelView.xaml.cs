@@ -1,6 +1,4 @@
-using AluguelImoveis.Helpers;
 using AluguelImoveis.Models;
-using AluguelImoveis.Models.Enums;
 using AluguelImoveis.Services;
 using System;
 using System.Net;
@@ -15,13 +13,13 @@ namespace AluguelImoveis.Views
         public CriarImovelView()
         {
             InitializeComponent();
-            TipoBox.ItemsSource = Enum.GetValues(typeof(TipoImovel))
-              .Cast<TipoImovel>()
-              .Select(e => new { Value = (int)e, Description = EnumHelper.GetEnumDescription(e) })
-              .ToList();
+            //TipoBox.ItemsSource = Enum.GetValues(typeof(TipoImovel))
+            //  .Cast<TipoImovel>()
+            //  .Select(e => new { Value = (int)e, Description = EnumHelper.GetEnumDescription(e) })
+            //  .ToList();
 
-            TipoBox.DisplayMemberPath = "Description";
-            TipoBox.SelectedValuePath = "Value";
+            //TipoBox.DisplayMemberPath = "Description";
+            //TipoBox.SelectedValuePath = "Value";
         }
 
         private async void Salvar_Click(object sender, RoutedEventArgs e)
@@ -36,7 +34,8 @@ namespace AluguelImoveis.Views
             {
                 var imovel = new Imovel
                 {
-                    Tipo = (int)TipoBox.SelectedValue,
+                    Codigo = CodigoBox.Text,
+                    Tipo = TipoBox.Text,
                     Endereco = EnderecoBox.Text.Trim(),
                     ValorLocacao = decimal.Parse(ValorLocacaoBox.Text),
                     Disponivel = DisponivelBox.IsChecked ?? true
@@ -120,7 +119,7 @@ namespace AluguelImoveis.Views
             {
                 case HttpStatusCode.Created:
                     var imovelCriado = await response.Content.ReadFromJsonAsync<Imovel>();
-                    MessageBox.Show($"Imóvel cadastrado com sucesso!\nID: {imovelCriado.Id}",
+                    MessageBox.Show($"Imóvel cadastrado com sucesso!",
                                   "Sucesso",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Information);
@@ -135,21 +134,6 @@ namespace AluguelImoveis.Views
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Warning);
                     break;
-
-                case HttpStatusCode.Conflict:
-                    MessageBox.Show("Já existe um imóvel com estas características cadastrado.",
-                                  "Conflito",
-                                  MessageBoxButton.OK,
-                                  MessageBoxImage.Warning);
-                    break;
-
-                case HttpStatusCode.Unauthorized:
-                    MessageBox.Show("Acesso não autorizado. Por favor, faça login novamente.",
-                                  "Não Autorizado",
-                                  MessageBoxButton.OK,
-                                  MessageBoxImage.Error);
-                    break;
-
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
                     MessageBox.Show($"Erro ao cadastrar imóvel:\n{response.StatusCode}\n{errorContent}",

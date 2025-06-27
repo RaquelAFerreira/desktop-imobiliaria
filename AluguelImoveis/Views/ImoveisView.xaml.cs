@@ -1,10 +1,11 @@
 using System.Windows;
 using AluguelImoveis.Services;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace AluguelImoveis.Views
 {
-    public partial class ImoveisView : Window
+    public partial class ImoveisView : Page
     {
         public ImoveisView()
         {
@@ -15,10 +16,7 @@ namespace AluguelImoveis.Views
         private async Task LoadDataAsync()
         {
             var imoveis = await ApiService.GetImoveisAsync();
-            Dispatcher.Invoke(() =>
-            {
-                ImoveisList.ItemsSource = imoveis;
-            });
+            ImoveisList.ItemsSource = imoveis;
         }
 
         private void Cadastrar_Click(object sender, RoutedEventArgs e)

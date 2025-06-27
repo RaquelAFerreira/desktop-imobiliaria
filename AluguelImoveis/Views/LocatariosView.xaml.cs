@@ -1,10 +1,11 @@
 using System.Windows;
 using AluguelImoveis.Services;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace AluguelImoveis.Views
 {
-    public partial class LocatariosView : Window
+    public partial class LocatariosView : Page
     {
         public LocatariosView()
         {

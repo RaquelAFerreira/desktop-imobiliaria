@@ -1,8 +1,9 @@
+using AluguelImoveis.Models;
+using AluguelImoveis.Models.DTOs;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using AluguelImoveis.Models;
 
 namespace AluguelImoveis.Services
 {
@@ -31,6 +32,28 @@ namespace AluguelImoveis.Services
         public static async Task<HttpResponseMessage> CriarImovelAsync(Imovel imovel)
         {
             return await _client.PostAsJsonAsync("Imoveis", imovel);
+        }
+
+        public static async Task<List<AluguelDetalhadoDto>> GetAlugueisAsync()
+        {
+            return await _client.GetFromJsonAsync<List<AluguelDetalhadoDto>>("Alugueis");
+        }
+
+        public static async Task<List<AluguelDetalhadoDto>> GetAlugueisAtivosAsync()
+        {
+            return await _client.GetFromJsonAsync<List<AluguelDetalhadoDto>>("Alugueis/ativos");
+        }
+
+        public static async Task<List<Imovel>> GetImoveisDisponiveisAsync()
+        {
+            return await _client.GetFromJsonAsync<List<Imovel>>("Imoveis/disponiveis");
+        }
+
+        public static async Task<HttpResponseMessage> CriarAluguelAsync(Aluguel aluguel)
+        {
+            var response = await _client.PostAsJsonAsync("Alugueis", aluguel);
+            response.EnsureSuccessStatusCode();
+            return response;
         }
     }
 }

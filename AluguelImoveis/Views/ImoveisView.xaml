@@ -1,7 +1,13 @@
-<Window x:Class="AluguelImoveis.Views.ImoveisView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Imóveis" Height="400" Width="650">
+<Page x:Class="AluguelImoveis.Views.ImoveisView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:AluguelImoveis.Converters"
+      Title="Imóveis">
+
+    <Page.Resources>
+        <local:ConverterBoolSimNao x:Key="SimNaoConverter" />
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -22,12 +28,19 @@
                   Grid.Row="1">
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="Disponível" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Disponivel, Converter={StaticResource SimNaoConverter}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Código" DisplayMemberBinding="{Binding Codigo}" Width="100"/>
                     <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Endereco}" Width="300"/>
                     <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Tipo}" Width="150"/>
                     <GridViewColumn Header="Valor" DisplayMemberBinding="{Binding ValorLocacao}" Width="80"/>
-                    <GridViewColumn Header="Disponível" DisplayMemberBinding="{Binding Disponivel}" Width="80"/>
                 </GridView>
             </ListView.View>
         </ListView>
     </Grid>
-</Window>
+</Page>
