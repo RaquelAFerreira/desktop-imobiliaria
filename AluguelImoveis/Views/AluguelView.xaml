@@ -8,18 +8,22 @@
         <local:ConverterBoolSimNao x:Key="SimNaoConverter" />
     </Page.Resources>
 
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0" HorizontalAlignment="Left">
-            <Button Content="Cadastrar Aluguel" Width="120" Height="30" Margin="0,0,10,0" Click="CadastrarAluguel_Click"/>
-            <Button Content="Mostrar Apenas Ativos" Width="160" Height="30" Click="FiltrarAtivos_Click"/>
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
+            <Button Content="Cadastrar Aluguel" Width="150" Height="30" Margin="0,0,10,0" Click="CadastrarAluguel_Click"/>
+            <ToggleButton x:Name="ToggleAtivos"
+                          Content="Mostrar Apenas Ativos"
+                          Width="140" Height="30"
+                          Checked="ToggleAtivos_Checked"
+                          Unchecked="ToggleAtivos_Unchecked"/>
         </StackPanel>
 
-        <ListView Name="AlugueisList" Margin="10" Grid.Row="1">
+        <ListView Name="AlugueisList" Grid.Row="1">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Início" Width="100">
@@ -32,11 +36,24 @@
                             <Binding Path="DataTermino" StringFormat="dd/MM/yyyy"/>
                         </GridViewColumn.DisplayMemberBinding>
                     </GridViewColumn>
-                    <GridViewColumn Header="Total Dias" DisplayMemberBinding="{Binding TotalDias}" Width="70"/>
-                    <GridViewColumn Header="Dias Restantes" DisplayMemberBinding="{Binding DiasRestantes}" Width="90"/>
+                    <GridViewColumn Header="Total Dias" DisplayMemberBinding="{Binding TotalDias}" Width="80"/>
+                    <GridViewColumn Header="Dias Restantes" DisplayMemberBinding="{Binding DiasRestantes}" Width="100"/>
                     <GridViewColumn Header="Locatário" DisplayMemberBinding="{Binding Locatario.NomeCompleto}" Width="150"/>
                     <GridViewColumn Header="Imóvel" DisplayMemberBinding="{Binding Imovel.Codigo}" Width="100"/>
                     <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Imovel.Endereco}" Width="150"/>
+                    <GridViewColumn Header="Ações" Width="70">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="🗑️"
+                                        Click="Excluir_Click" 
+                                        Tag="{Binding}" 
+                                        Background="Red" 
+                                        Foreground="White" 
+                                        Padding="5" 
+                                        FontWeight="Bold"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

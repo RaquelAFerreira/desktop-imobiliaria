@@ -1,8 +1,12 @@
+using AluguelImoveis.Models;
 using AluguelImoveis.Models.DTOs;
 using AluguelImoveis.Services;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace AluguelImoveis.Views
 {
@@ -16,28 +20,67 @@ namespace AluguelImoveis.Views
 
         private async Task LoadDataAsync()
         {
-            List<AluguelDetalhadoDto> alugueis = await ApiService.GetAlugueisAsync();
-            AlugueisList.ItemsSource = alugueis;
-        }
-
-        private async void FiltrarAtivos_Click(object sender, RoutedEventArgs e)
-        {
             try
             {
-                var ativos = await ApiService.GetAlugueisAtivosAsync();
-                AlugueisList.ItemsSource = ativos;
+                if (ToggleAtivos?.IsChecked == true)
+                {
+                    var ativos = await ApiService.GetAlugueisAtivosAsync();
+                    AlugueisList.ItemsSource = ativos;
+                }
+                else
+                {
+                    var alugueis = await ApiService.GetAlugueisAsync();
+                    AlugueisList.ItemsSource = alugueis;
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar aluguéis ativos: {ex.Message}");
+                MessageBox.Show($"Erro ao carregar aluguéis: {ex.Message}");
             }
+        }
+
+        private void ToggleAtivos_Checked(object sender, RoutedEventArgs e)
+        {
+            _ = LoadDataAsync();
+        }
+
+        private void ToggleAtivos_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _ = LoadDataAsync();
         }
 
         private void CadastrarAluguel_Click(object sender, RoutedEventArgs e)
         {
             var view = new CriarAluguelView();
             view.ShowDialog();
-            _ = LoadDataAsync(); // Recarrega os dados após fechar
+            _ = LoadDataAsync();
+        }
+
+        private async void Excluir_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is AluguelDetalhadoDto aluguel)
+            {
+                var confirmar = MessageBox.Show(
+                    $"Deseja realmente excluir esse aluguel?",
+                    "Confirmação",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning
+                );
+
+                if (confirmar == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        await ApiService.ExcluirAluguelAsync(aluguel.AluguelId);
+                        MessageBox.Show("Aluguel excluído com sucesso!");
+                        await LoadDataAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Erro ao excluir aluguel: {ex.Message}");
+                    }
+                }
+            }
         }
     }
 }

@@ -55,5 +55,29 @@ namespace AluguelImoveis.Services
             response.EnsureSuccessStatusCode();
             return response;
         }
+
+        public static async Task ExcluirImovelAsync(Guid imovelId)
+        {
+            var response = await _client.DeleteAsync($"Imoveis/{imovelId}");
+            response.EnsureSuccessStatusCode();
+        }
+
+        public static async Task ExcluirLocatarioAsync(Guid locatarioId)
+        {
+            var response = await _client.DeleteAsync($"Locatarios/{locatarioId}");
+            response.EnsureSuccessStatusCode();
+        }
+        public static async Task ExcluirAluguelAsync(Guid aluguelId)
+        {
+            var response = await _client.DeleteAsync($"Alugueis/{aluguelId}");
+            response.EnsureSuccessStatusCode();
+        }
+
+        public static async Task AtualizarImovelAsync(Imovel imovel)
+        {
+            var response = await _client.PutAsJsonAsync($"Imoveis/{imovel.Id}", imovel);
+            response.EnsureSuccessStatusCode();
+        }
+
     }
 }
