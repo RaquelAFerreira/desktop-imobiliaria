@@ -1,3 +1,4 @@
+using AluguelImoveis.Helpers;
 using AluguelImoveis.Models;
 using AluguelImoveis.Services;
 using System.Net;
@@ -22,18 +23,18 @@ namespace AluguelImoveis.Views
                 return;
             }
 
-            var locatario = new Locatario
-            {
-                NomeCompleto = NomeCompletoBox.Text.Trim(),
-                Telefone = Regex.Replace(TelefoneBox.Text, @"[^\d]", ""),
-                CPF = Regex.Replace(CPFBox.Text, @"[^\d]", "")
-            };
-
-            SalvarButton.IsEnabled = false;
-            SalvarButton.Content = "Salvando...";
-
             try
             {
+                var locatario = new Locatario
+                {
+                    NomeCompleto = NomeCompletoBox.Text.Trim(),
+                    Telefone = Regex.Replace(TelefoneBox.Text, @"[^\d]", ""),
+                    CPF = Regex.Replace(CPFBox.Text, @"[^\d]", "")
+                };
+
+                SalvarButton.IsEnabled = false;
+                SalvarButton.Content = "Salvando...";
+
                 HttpResponseMessage response = await ApiService.CriarLocatarioAsync(locatario);
 
                 await ProcessarResposta(response, locatario);
@@ -71,7 +72,7 @@ namespace AluguelImoveis.Views
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(TelefoneBox.Text))
+            if (string.IsNullOrWhiteSpace(TelefoneBox.Text) || !Regex.IsMatch(TelefoneBox.Text, @"^\d+$"))
             {
                 MessageBox.Show("O campo 'Telefone' é obrigatório.",
                               "Validação",
@@ -81,17 +82,26 @@ namespace AluguelImoveis.Views
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(CPFBox.Text))
+            if (string.IsNullOrWhiteSpace(CPFBox.Text) || !Regex.IsMatch(CPFBox.Text, @"^\d+$"))
             {
                 MessageBox.Show("O campo 'CPF' é obrigatório.",
-                              "Validação",
-                              MessageBoxButton.OK,
-                              MessageBoxImage.Warning);
+                                "Validação",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
                 CPFBox.Focus();
                 return false;
             }
+            else if (!ValidarCPF.CPFValido(CPFBox.Text))
+            {
+                MessageBox.Show("O campo 'CPF' deve ser válido (conter 11 dígitos).",
+                                "Validação",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                                CPFBox.Focus();
+                return false;
+            }
 
-            return true;
+                return true;
         }
         private async Task ProcessarResposta(HttpResponseMessage response, Locatario imovel)
         {

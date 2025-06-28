@@ -8,7 +8,7 @@ namespace AluguelImoveis.Views
 {
     public partial class ImoveisView : Page
     {        
-        private List<Imovel> todosImoveis = new();
+        private IEnumerable<Imovel> todosImoveis;
 
         public ImoveisView()
         {
@@ -30,24 +30,33 @@ namespace AluguelImoveis.Views
         }
         private void Filtrar_Click(object sender, RoutedEventArgs e)
         {
-            var filtrados = todosImoveis.AsEnumerable();
+            var imoveis = todosImoveis; 
 
-            if (TipoComboBox.Text is string tipoSelecionado && TipoComboBox.Text != "")
+            // Filtro por disponibilidade
+            if (DisponivelComboBox.SelectedItem != null)
             {
-                filtrados = filtrados.Where(i => i.Tipo == tipoSelecionado);
+                string disponivelSelecionado = (DisponivelComboBox.SelectedItem as ComboBoxItem).Content.ToString();
+
+                if (disponivelSelecionado == "Sim")
+                    imoveis = imoveis.Where(i => i.Disponivel).ToList();
+                else if (disponivelSelecionado == "Não")
+                    imoveis = imoveis.Where(i => !i.Disponivel).ToList();
             }
 
-            if (decimal.TryParse(ValorMinBox.Text, out decimal valMin))
+            if (TipoComboBox.SelectedItem != null)
             {
-                filtrados = filtrados.Where(i => i.ValorLocacao >= valMin);
+                string tipoSelecionado = (TipoComboBox.SelectedItem as ComboBoxItem).Content.ToString();
+                if (!string.IsNullOrEmpty(tipoSelecionado))
+                    imoveis = imoveis.Where(i => i.Tipo == tipoSelecionado).ToList();
             }
 
-            if (decimal.TryParse(ValorMaxBox.Text, out decimal valMax))
-            {
-                filtrados = filtrados.Where(i => i.ValorLocacao <= valMax);
-            }
+            if (!string.IsNullOrEmpty(ValorMinBox.Text) && decimal.TryParse(ValorMinBox.Text, out decimal valorMin))
+                imoveis = imoveis.Where(i => i.ValorLocacao >= valorMin).ToList();
 
-            ImoveisList.ItemsSource = filtrados.ToList();
+            if (!string.IsNullOrEmpty(ValorMaxBox.Text) && decimal.TryParse(ValorMaxBox.Text, out decimal valorMax))
+                imoveis = imoveis.Where(i => i.ValorLocacao <= valorMax).ToList();
+
+            ImoveisList.ItemsSource = imoveis;
         }
 
         private async void Excluir_Click(object sender, RoutedEventArgs e)
@@ -69,9 +78,20 @@ namespace AluguelImoveis.Views
                         MessageBox.Show("Imóvel excluído com sucesso!");
                         await LoadDataAsync();
                     }
+                    catch (InvalidOperationException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Não foi possível excluir",
+                                       MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    catch (KeyNotFoundException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Imóvel não encontrado",
+                                       MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Erro ao excluir imóvel: {ex.Message}");
+                        MessageBox.Show($"Ocorreu um erro ao tentar excluir o imóvel.", "Erro",
+                                       MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }

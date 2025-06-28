@@ -19,6 +19,8 @@
             <ToggleButton x:Name="ToggleAtivos"
                           Content="Mostrar Apenas Ativos"
                           Width="140" Height="30"
+                          Background="Black" 
+                          Foreground="White" 
                           Checked="ToggleAtivos_Checked"
                           Unchecked="ToggleAtivos_Unchecked"/>
         </StackPanel>
@@ -41,15 +43,16 @@
                     <GridViewColumn Header="Locatário" DisplayMemberBinding="{Binding Locatario.NomeCompleto}" Width="150"/>
                     <GridViewColumn Header="Imóvel" DisplayMemberBinding="{Binding Imovel.Codigo}" Width="100"/>
                     <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Imovel.Endereco}" Width="150"/>
-                    <GridViewColumn Header="Ações" Width="70">
+                    <GridViewColumn Header="Excluir" Width="45">
                         <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="🗑️"
+                            <DataTemplate >
+                                <Button Content="X" 
                                         Click="Excluir_Click" 
                                         Tag="{Binding}" 
                                         Background="Red" 
                                         Foreground="White" 
                                         Padding="5" 
+                                        Width="30"
                                         FontWeight="Bold"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
