@@ -13,13 +13,6 @@ namespace AluguelImoveis.Views
         public CriarImovelView()
         {
             InitializeComponent();
-            //TipoBox.ItemsSource = Enum.GetValues(typeof(TipoImovel))
-            //  .Cast<TipoImovel>()
-            //  .Select(e => new { Value = (int)e, Description = EnumHelper.GetEnumDescription(e) })
-            //  .ToList();
-
-            //TipoBox.DisplayMemberPath = "Description";
-            //TipoBox.SelectedValuePath = "Value";
         }
 
         private async void Salvar_Click(object sender, RoutedEventArgs e)

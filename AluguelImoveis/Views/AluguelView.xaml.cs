@@ -75,9 +75,15 @@ namespace AluguelImoveis.Views
                         MessageBox.Show("Aluguel excluído com sucesso!");
                         await LoadDataAsync();
                     }
+                    catch (KeyNotFoundException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Aluguel não encontrado",
+                                       MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Erro ao excluir aluguel: {ex.Message}");
+                        MessageBox.Show($"Ocorreu um erro ao tentar excluir o aluguel.", "Erro",
+                                       MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }

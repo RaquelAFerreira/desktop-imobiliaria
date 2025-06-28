@@ -63,9 +63,20 @@ namespace AluguelImoveis.Views
                         MessageBox.Show("Locatário excluído com sucesso!");
                         await LoadDataAsync();
                     }
+                    catch (InvalidOperationException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Não foi possível excluir",
+                                       MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    catch (KeyNotFoundException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Locatário não encontrado",
+                                       MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Erro ao excluir locatário: {ex.Message}");
+                        MessageBox.Show($"Ocorreu um erro ao tentar excluir o locatário.", "Erro",
+                                       MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
