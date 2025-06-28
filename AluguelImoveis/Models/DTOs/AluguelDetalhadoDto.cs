@@ -8,6 +8,7 @@ namespace AluguelImoveis.Models.DTOs
 {
     public class AluguelDetalhadoDto
     {
+        public Guid AluguelId { get; set; }
         public DateTime DataInicio { get; set; }
         public DateTime DataTermino { get; set; }
         public int TotalDias { get; set; }
@@ -23,6 +24,8 @@ namespace AluguelImoveis.Models.DTOs
         public string Endereco { get; set; }
         public string Tipo { get; set; }
         public string Codigo { get; set; }
+
+        public decimal ValorLocacao { get; set; }
 
     }
 

@@ -3,29 +3,46 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Locatários">
 
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Content="Cadastrar Locatário"
-                Margin="10"
-                Width="150"
-                Height="30"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Click="Cadastrar_Click"
-                Grid.Row="0"/>
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
+            <Button Content="Cadastrar Locatário"
+                    Width="150" Height="30"
+                    Margin="0,0,10,0"
+                    Click="Cadastrar_Click"/>
 
-        <ListView Name="LocatariosList"
-                  Margin="10"
-                  Grid.Row="1">
+            <TextBlock Text="Nome:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox x:Name="NomeFiltroBox" Width="150" Height="25" Margin="0,0,10,0"/>
+
+            <TextBlock Text="CPF:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <TextBox x:Name="CpfFiltroBox" Width="150" Height="25" Margin="0,0,10,0"/>
+
+            <Button Content="Filtrar" Width="80" Height="30" Click="Filtrar_Click"/>
+        </StackPanel>
+
+        <ListView Name="LocatariosList" Grid.Row="1">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Nome" DisplayMemberBinding="{Binding NomeCompleto}" Width="150"/>
                     <GridViewColumn Header="Telefone" DisplayMemberBinding="{Binding Telefone}" Width="150"/>
                     <GridViewColumn Header="CPF" DisplayMemberBinding="{Binding CPF}" Width="150"/>
+                    <GridViewColumn Header="Excluir" Width="70">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="🗑️"
+                                        Click="Excluir_Click" 
+                                        Tag="{Binding}" 
+                                        Background="Red" 
+                                        Foreground="White" 
+                                        Padding="5" 
+                                        FontWeight="Bold"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
