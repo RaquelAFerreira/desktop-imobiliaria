@@ -18,7 +18,7 @@ namespace AluguelImoveis.Views
 
         private async void Salvar_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidarCampos())
+            if (!ValidateFields())
             {
                 return;
             }
@@ -37,7 +37,7 @@ namespace AluguelImoveis.Views
 
                 HttpResponseMessage response = await ApiService.CriarLocatarioAsync(locatario);
 
-                await ProcessarResposta(response, locatario);
+                await ProcessResponse(response, locatario);
             }
             catch (Exception ex)
             {
@@ -53,7 +53,7 @@ namespace AluguelImoveis.Views
                 SalvarButton.Content = "Salvar";
             }
         }
-        private bool ValidarCampos()
+        private bool ValidateFields()
         {
             if (string.IsNullOrWhiteSpace(NomeCompletoBox.Text))
             {
@@ -96,7 +96,7 @@ namespace AluguelImoveis.Views
 
                 return true;
         }
-        private async Task ProcessarResposta(HttpResponseMessage response, Locatario imovel)
+        private async Task ProcessResponse(HttpResponseMessage response, Locatario imovel)
         {
             switch (response.StatusCode)
             {

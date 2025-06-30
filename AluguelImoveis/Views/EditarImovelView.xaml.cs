@@ -30,7 +30,7 @@ namespace AluguelImoveis.Views
 
         private async void Salvar_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidarCampos())
+            if (!ValidateFields())
             {
                 return;
             }
@@ -48,7 +48,7 @@ namespace AluguelImoveis.Views
 
                 HttpResponseMessage response = await ApiService.AtualizarImovelAsync(_imovel);
 
-                await ProcessarResposta(response);
+                await ProcessResponse(response);
             }
             catch (FormatException)
             {
@@ -72,7 +72,7 @@ namespace AluguelImoveis.Views
             }
         }
 
-        private bool ValidarCampos()
+        private bool ValidateFields()
         {
             if (string.IsNullOrWhiteSpace(CodigoBox.Text))
             {
@@ -117,7 +117,7 @@ namespace AluguelImoveis.Views
             return true;
         }
 
-        private async Task ProcessarResposta(HttpResponseMessage response)
+        private async Task ProcessResponse(HttpResponseMessage response)
         {
             switch (response.StatusCode)
             {
