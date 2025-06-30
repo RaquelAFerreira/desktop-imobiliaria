@@ -1,6 +1,7 @@
 using AluguelImoveis.Helpers;
 using AluguelImoveis.Models;
 using AluguelImoveis.Services;
+using AluguelImoveis.Services.Interfaces;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -9,11 +10,14 @@ using System.Windows;
 
 namespace AluguelImoveis.Views
 {
-    public partial class CriarLocatarioView : Window
+    public partial class CreateLocatarioView : Window
     {
-        public CriarLocatarioView()
+        private readonly ILocatarioHttpService _locatarioService;
+
+        public CreateLocatarioView(ILocatarioHttpService locatarioService)
         {
             InitializeComponent();
+            _locatarioService = locatarioService;
         }
 
         private async void Salvar_Click(object sender, RoutedEventArgs e)
@@ -35,7 +39,7 @@ namespace AluguelImoveis.Views
                 SalvarButton.IsEnabled = false;
                 SalvarButton.Content = "Salvando...";
 
-                HttpResponseMessage response = await ApiService.CriarLocatarioAsync(locatario);
+                HttpResponseMessage response = await _locatarioService.CreateAsync(locatario);
 
                 await ProcessResponse(response, locatario);
             }
@@ -48,7 +52,6 @@ namespace AluguelImoveis.Views
             }
             finally
             {
-                // Reabilitar botão após a operação
                 SalvarButton.IsEnabled = true;
                 SalvarButton.Content = "Salvar";
             }
@@ -111,8 +114,8 @@ namespace AluguelImoveis.Views
                     break;
 
                 case HttpStatusCode.BadRequest:
-                    var detalhesErro = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Dados inválidos:\n{detalhesErro}",
+                    var errorDetails = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Dados inválidos:\n{errorDetails}",
                                   "Erro de Validação",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Warning);

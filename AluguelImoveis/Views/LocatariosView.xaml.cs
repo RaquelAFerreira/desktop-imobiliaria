@@ -1,6 +1,7 @@
 using AluguelImoveis.Models;
 using AluguelImoveis.Models.DTOs;
 using AluguelImoveis.Services;
+using AluguelImoveis.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,23 +12,26 @@ namespace AluguelImoveis.Views
 {
     public partial class LocatariosView : Page
     {
-        private List<Locatario> todosLocatarios = new();
+        private List<Locatario> allLocatarios = new();
 
-        public LocatariosView()
+        private readonly ILocatarioHttpService _locatarioService;
+
+        public LocatariosView(ILocatarioHttpService locatarioService)
         {
             InitializeComponent();
+            _locatarioService = locatarioService;
             _ = LoadDataAsync();
         }
 
         private async Task LoadDataAsync()
         {
-            todosLocatarios = await ApiService.GetLocatariosAsync();
-            LocatariosList.ItemsSource = todosLocatarios;
+            allLocatarios = await _locatarioService.GetAllAsync();
+            LocatariosList.ItemsSource = allLocatarios;
         }
 
         private void Cadastrar_Click(object sender, RoutedEventArgs e)
         {
-            var form = new CriarLocatarioView();
+            var form = new CreateLocatarioView(_locatarioService);
             form.ShowDialog();
             _ = LoadDataAsync();
         }
@@ -37,29 +41,29 @@ namespace AluguelImoveis.Views
             var nome = NomeFiltroBox.Text.ToLower();
             var cpf = CpfFiltroBox.Text;
 
-            var filtrados = todosLocatarios.Where(l =>
+            var filtered = allLocatarios.Where(l =>
                 (string.IsNullOrWhiteSpace(nome) || l.NomeCompleto.ToLower().Contains(nome)) &&
                 (string.IsNullOrWhiteSpace(cpf) || l.CPF.Contains(cpf))
             ).ToList();
 
-            LocatariosList.ItemsSource = filtrados;
+            LocatariosList.ItemsSource = filtered;
         }
         private async void Excluir_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is Locatario locatario)
             {
-                var confirmar = MessageBox.Show(
+                var confirm = MessageBox.Show(
                     $"Deseja realmente excluir o locatário de CPF {locatario.CPF}?",
                     "Confirmação",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning
                 );
 
-                if (confirmar == MessageBoxResult.Yes)
+                if (confirm == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        await ApiService.ExcluirLocatarioAsync(locatario.Id);
+                        await _locatarioService.DeleteAsync(locatario.Id);
                         MessageBox.Show("Locatário excluído com sucesso!");
                         await LoadDataAsync();
                     }

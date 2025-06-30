@@ -1,4 +1,4 @@
-<Window x:Class="AluguelImoveis.Views.EditarImovelView"
+<Window x:Class="AluguelImoveis.Views.UpdateImovelView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Editar Imóvel" Height="350" Width="400" WindowStartupLocation="CenterScreen">

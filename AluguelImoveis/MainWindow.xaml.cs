@@ -7,17 +7,20 @@ namespace AluguelImoveis
     public partial class MainWindow : Window
     {
         private readonly IImovelHttpService _imovelService;
+        private readonly ILocatarioHttpService _locatarioService;
+        //private readonly IAluguellHttpService _aluguelService;
+
 
         public MainWindow(
-            IImovelHttpService imovelService)
+            IImovelHttpService imovelService, ILocatarioHttpService locatarioService)
         {
             InitializeComponent();
             _imovelService = imovelService;
-
+            _locatarioService = locatarioService;
         }
         private void ListarLocatarios_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Views.LocatariosView()); // <-- Page
+            MainFrame.Navigate(new Views.LocatariosView(_locatarioService));
         }
 
         private void ListarImoveis_Click(object sender, RoutedEventArgs e)

@@ -35,22 +35,21 @@ namespace AluguelImoveis.Views
         {
             var imoveis = allImoveis; 
 
-            // Filtro por disponibilidade
             if (DisponivelComboBox.SelectedItem != null)
             {
-                string disponivelSelecionado = (DisponivelComboBox.SelectedItem as ComboBoxItem).Content.ToString();
+                string selectedDisponivel = (DisponivelComboBox.SelectedItem as ComboBoxItem).Content.ToString();
 
-                if (disponivelSelecionado == "Sim")
+                if (selectedDisponivel == "Sim")
                     imoveis = imoveis.Where(i => i.Disponivel).ToList();
-                else if (disponivelSelecionado == "Não")
+                else if (selectedDisponivel == "Não")
                     imoveis = imoveis.Where(i => !i.Disponivel).ToList();
             }
 
             if (TipoComboBox.SelectedItem != null)
             {
-                string tipoSelecionado = (TipoComboBox.SelectedItem as ComboBoxItem).Content.ToString();
-                if (!string.IsNullOrEmpty(tipoSelecionado))
-                    imoveis = imoveis.Where(i => i.Tipo == tipoSelecionado).ToList();
+                string selectedTipo = (TipoComboBox.SelectedItem as ComboBoxItem).Content.ToString();
+                if (!string.IsNullOrEmpty(selectedTipo))
+                    imoveis = imoveis.Where(i => i.Tipo == selectedTipo).ToList();
             }
 
             if (!string.IsNullOrEmpty(ValorMinBox.Text) && decimal.TryParse(ValorMinBox.Text, out decimal valorMin))
@@ -103,7 +102,7 @@ namespace AluguelImoveis.Views
         {
             if (sender is Button button && button.Tag is Imovel imovel)
             {
-                var editView = new EditarImovelView(imovel);
+                var editView = new UpdateImovelView(imovel, _imovelService);
                 if (editView.ShowDialog() == true)
                 {
                     _ = LoadDataAsync();

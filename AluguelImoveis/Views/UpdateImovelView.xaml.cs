@@ -1,5 +1,6 @@
 using AluguelImoveis.Models;
 using AluguelImoveis.Services;
+using AluguelImoveis.Services.Interfaces;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -8,18 +9,20 @@ using System.Windows.Controls;
 
 namespace AluguelImoveis.Views
 {
-    public partial class EditarImovelView : Window
+    public partial class UpdateImovelView : Window
     {
         private readonly Imovel _imovel;
+        private readonly IImovelHttpService _imovelService;
 
-        public EditarImovelView(Imovel imovel)
+        public UpdateImovelView(Imovel imovel, IImovelHttpService imovelService)
         {
             InitializeComponent();
+            _imovelService = imovelService;
             _imovel = imovel;
-            PreencherCampos();
+            FillFields();
         }
 
-        private void PreencherCampos()
+        private void FillFields()
         {
             CodigoBox.Text = _imovel.Codigo;
             TipoBox.Text = _imovel.Tipo;
@@ -46,7 +49,7 @@ namespace AluguelImoveis.Views
                 SalvarButton.IsEnabled = false;
                 SalvarButton.Content = "Salvando...";
 
-                HttpResponseMessage response = await ApiService.AtualizarImovelAsync(_imovel);
+                HttpResponseMessage response = await _imovelService.UpdateAsync(_imovel);
 
                 await ProcessResponse(response);
             }
@@ -132,8 +135,8 @@ namespace AluguelImoveis.Views
                     break;
 
                 case HttpStatusCode.BadRequest:
-                    var detalhesErro = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Dados inválidos:\n{detalhesErro}",
+                    var errorDetails = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Dados inválidos:\n{errorDetails}",
                                   "Erro de Validação",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Warning);
