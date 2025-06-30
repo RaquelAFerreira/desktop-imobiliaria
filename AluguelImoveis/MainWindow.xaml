@@ -4,32 +4,51 @@
         Title="Sistema de Aluguéis"
         Height="600"
         Width="900"
+        MinWidth="800"
+        MinHeight="500"
+        Background="#E6F2FF"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
     <DockPanel>
+        <Border DockPanel.Dock="Top"
+                Background="#1976D2"  
+            Padding="10">
+            <Grid>
+                <TextBlock Text="Aluguel de Imóveis"
+                           FontSize="24"
+                           Foreground="White"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"/>
 
-        <!-- Título do sistema -->
-        <TextBlock Text="Sistema de Aluguel de Imóveis"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Foreground="Black"
-                   Margin="10"
-                   DockPanel.Dock="Top"
-                   HorizontalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <Button Content="Locatários" 
+                            Margin="5,0" 
+                            Click="Locatarios_Click" 
+                            Width="100" Height="29"
+                            Background="white"
+                            />
+                    <Button Content="Imóveis" 
+                            Margin="5,0" 
+                            Click="Imoveis_Click" 
+                            Width="100"
+                            Background="white"
+                            />
+                    <Button Content="Aluguéis" 
+                            Margin="5,0" 
+                            Click="Alugueis_Click" 
+                            Width="100"
+                            Background="white"
+                            />
+                </StackPanel>
+            </Grid>
+        </Border>
 
-        <!-- Menu superior -->
-        <StackPanel DockPanel.Dock="Top"
-                    Orientation="Horizontal"
-                    Background="#EEE"
-                    Margin="10"
-                    HorizontalAlignment="Center">
-            <Button Content="Locatários" Margin="5" Click="ListarLocatarios_Click" Width="100"/>
-            <Button Content="Imóveis" Margin="5" Click="ListarImoveis_Click" Width="100"/>
-            <Button Content="Aluguéis" Margin="5" Click="ListarAlugueis_Click" Width="100"/>
-        </StackPanel>
-
-        <!-- Área de navegação -->
+        <!-- Área principal de conteúdo -->
         <Frame x:Name="MainFrame"
-               NavigationUIVisibility="Hidden"/>
+               NavigationUIVisibility="Hidden"
+               Margin="10"/>
     </DockPanel>
 </Window>

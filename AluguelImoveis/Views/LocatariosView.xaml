@@ -13,7 +13,9 @@
             <Button Content="Cadastrar Locatário"
                     Width="150" Height="30"
                     Margin="0,0,10,0"
-                    Click="Cadastrar_Click"/>
+                    Click="Cadastrar_Click"
+                    Foreground="white"
+                    Background="#1976D2"/>
 
             <TextBlock Text="Nome:" VerticalAlignment="Center" Margin="0,0,5,0"/>
             <TextBox x:Name="NomeFiltroBox" Width="150" Height="25" Margin="0,0,10,0"/>
@@ -24,13 +26,14 @@
             <Button Content="Filtrar"                                        
                     Background="Black" 
                     Foreground="White" 
-                    Width="70" Height="30" 
+                    Width="71" Height="30" 
+                    Margin="10,0,0,0"
                     Click="Filtrar_Click"/>
         </StackPanel>
-        <ListView Name="LocatariosList" Grid.Row="1">
+        <ListView Name="LocatariosList" Grid.Row="1" Margin="0,20,0,0">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Nome" DisplayMemberBinding="{Binding NomeCompleto}" Width="150"/>
+                    <GridViewColumn Header="Nome" DisplayMemberBinding="{Binding NomeCompleto}" Width="490"/>
                     <GridViewColumn Header="Telefone" DisplayMemberBinding="{Binding Telefone}" Width="150"/>
                     <GridViewColumn Header="CPF" DisplayMemberBinding="{Binding CPF}" Width="150"/>
                     <GridViewColumn Header="Excluir" Width="45">

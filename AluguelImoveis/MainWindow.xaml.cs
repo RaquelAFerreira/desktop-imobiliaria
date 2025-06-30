@@ -8,29 +8,31 @@ namespace AluguelImoveis
     {
         private readonly IImovelHttpService _imovelService;
         private readonly ILocatarioHttpService _locatarioService;
-        //private readonly IAluguellHttpService _aluguelService;
+        private readonly IAluguelHttpService _aluguelService;
 
 
         public MainWindow(
-            IImovelHttpService imovelService, ILocatarioHttpService locatarioService)
+            IImovelHttpService imovelService, ILocatarioHttpService locatarioService, IAluguelHttpService aluguelService)
         {
             InitializeComponent();
             _imovelService = imovelService;
             _locatarioService = locatarioService;
+            _aluguelService = aluguelService;
+
         }
-        private void ListarLocatarios_Click(object sender, RoutedEventArgs e)
+        private void Locatarios_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new Views.LocatariosView(_locatarioService));
         }
 
-        private void ListarImoveis_Click(object sender, RoutedEventArgs e)
+        private void Imoveis_Click(object sender, RoutedEventArgs e)
         {
             MainFrame.Navigate(new Views.ImoveisView(_imovelService));
         }
 
-        private void ListarAlugueis_Click(object sender, RoutedEventArgs e)
+        private void Alugueis_Click(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new Views.AlugueisView());
+            MainFrame.Navigate(new Views.AlugueisView(_aluguelService, _imovelService, _locatarioService));
         }
     }
 }
