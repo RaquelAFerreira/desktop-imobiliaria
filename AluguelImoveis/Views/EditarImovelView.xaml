@@ -1,7 +1,7 @@
 <Window x:Class="AluguelImoveis.Views.EditarImovelView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Editar Imóvel" Height="300" Width="400" WindowStartupLocation="CenterScreen">
+        Title="Editar Imóvel" Height="350" Width="400" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -9,21 +9,42 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="CodigoBox" Margin="0,0,0,10"  />
-        <TextBox x:Name="EnderecoBox" Grid.Row="1" Margin="0,0,0,10" />
-        <ComboBox x:Name="TipoComboBox" Grid.Row="2" Margin="0,0,0,10" Height="25">
-            <ComboBoxItem Content="Apartamento" />
-            <ComboBoxItem Content="Casa" />
-            <ComboBoxItem Content="Sobrado" />
-            <ComboBoxItem Content="Kitnet" />
-            <ComboBoxItem Content="Loja Comercial" />
-            <ComboBoxItem Content="Galpão Industrial" />
-        </ComboBox>
-        <TextBox x:Name="ValorBox" Grid.Row="3" Margin="0,0,0,10" />
-        <CheckBox x:Name="DisponivelCheck" Content="Disponível" Grid.Row="4" Margin="0,0,0,10"/>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="Código:"/>
+            <TextBox x:Name="CodigoBox"/>
+        </StackPanel>
 
-        <Button Content="Salvar" Grid.Row="5" HorizontalAlignment="Right" Width="80" Click="Salvar_Click"/>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,0,0,10">
+            <TextBlock Text="Tipo:"/>
+            <ComboBox x:Name="TipoBox">
+                <ComboBoxItem Content="Apartamento"/>
+                <ComboBoxItem Content="Casa"/>
+                <ComboBoxItem Content="Sobrado"/>
+                <ComboBoxItem Content="Kitnet"/>
+                <ComboBoxItem Content="Loja Comercial"/>
+                <ComboBoxItem Content="Galpão Industrial"/>
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,0,0,10">
+            <TextBlock Text="Endereço:"/>
+            <TextBox x:Name="EnderecoBox"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="3" Margin="0,0,0,10">
+            <TextBlock Text="Valor Locação:"/>
+            <TextBox x:Name="ValorLocacaoBox"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Row="4" Margin="0,0,0,10">
+            <TextBlock Text="Disponível para aluguel:"/>
+            <CheckBox x:Name="DisponivelBox"/>
+        </StackPanel>
+
+        <Button x:Name="SalvarButton" Grid.Row="5" Content="Salvar" Width="100" Height="30" 
+                HorizontalAlignment="Center" Click="Salvar_Click"/>
     </Grid>
 </Window>

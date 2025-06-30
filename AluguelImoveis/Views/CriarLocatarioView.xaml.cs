@@ -39,16 +39,9 @@ namespace AluguelImoveis.Views
 
                 await ProcessarResposta(response, locatario);
             }
-            catch (HttpRequestException httpEx)
-            {
-                MessageBox.Show($"Falha na conexão com a API:\n{httpEx.Message}",
-                              "Erro de Conexão",
-                              MessageBoxButton.OK,
-                              MessageBoxImage.Error);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro inesperado:\n{ex.Message}",
+                MessageBox.Show($"Não foi possível criar um locatário.",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
@@ -126,7 +119,7 @@ namespace AluguelImoveis.Views
                     break;
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar locatário:\n{response.StatusCode}\n{errorContent}",
+                    MessageBox.Show($"Erro ao cadastrar locatário!",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);

@@ -82,7 +82,7 @@ namespace AluguelImoveis.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro inesperado:\n{ex.Message}",
+                MessageBox.Show($"Não foi possível criar um registro de aluguel.",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
@@ -174,7 +174,7 @@ namespace AluguelImoveis.Views
 
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar aluguel:\n{response.StatusCode}\n{errorContent}",
+                    MessageBox.Show($"Erro ao cadastrar aluguel!",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);

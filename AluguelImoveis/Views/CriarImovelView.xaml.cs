@@ -49,16 +49,9 @@ namespace AluguelImoveis.Views
                               MessageBoxImage.Warning);
                 ValorLocacaoBox.Focus();
             }
-            catch (HttpRequestException httpEx)
-            {
-                MessageBox.Show($"Falha na conexão com a API:\n{httpEx.Message}",
-                              "Erro de Conexão",
-                              MessageBoxButton.OK,
-                              MessageBoxImage.Error);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro inesperado:\n{ex.Message}",
+                MessageBox.Show($"Não foi possível criar um imóvel.",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
@@ -129,7 +122,7 @@ namespace AluguelImoveis.Views
                     break;
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar imóvel:\n{response.StatusCode}\n{errorContent}",
+                    MessageBox.Show($"Erro ao cadastrar imóvel!",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);

@@ -9,42 +9,42 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="115"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Código:" Grid.Row="0" Grid.Column="0" Margin="5"/>
-        <TextBox Name="CodigoBox" Grid.Row="0" Grid.Column="1" Margin="5"/>
-        
-        <TextBlock Text="Tipo:" Grid.Row="1" Grid.Column="0" Margin="5"/>
-        <ComboBox Name="TipoBox" Grid.Row="1" Grid.Column="1" Margin="5">
-            <ComboBoxItem Content="Apartamento"/>
-            <ComboBoxItem Content="Casa"/>
-            <ComboBoxItem Content="Sobrado"/>
-            <ComboBoxItem Content="Kitnet"/>
-            <ComboBoxItem Content="Loja Comercial"/>
-            <ComboBoxItem Content="Galpão Industrial"/>
-        </ComboBox>
+        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="Código:"/>
+            <TextBox x:Name="CodigoBox"/>
+        </StackPanel>
 
-        <TextBlock Text="Endereço:" Grid.Row="2" Grid.Column="0" Margin="5"/>
-        <TextBox Name="EnderecoBox" Grid.Row="2" Grid.Column="1" Margin="5"/>
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,0,0,10">
+            <TextBlock Text="Tipo:"/>
+            <ComboBox x:Name="TipoBox">
+                <ComboBoxItem Content="Apartamento"/>
+                <ComboBoxItem Content="Casa"/>
+                <ComboBoxItem Content="Sobrado"/>
+                <ComboBoxItem Content="Kitnet"/>
+                <ComboBoxItem Content="Loja Comercial"/>
+                <ComboBoxItem Content="Galpão Industrial"/>
+            </ComboBox>
+        </StackPanel>
 
-        <TextBlock Text="Valor Locação:" Grid.Row="3" Grid.Column="0" Margin="5"/>
-        <TextBox Name="ValorLocacaoBox" Grid.Row="3" Grid.Column="1" Margin="5"/>
+        <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,0,0,10">
+            <TextBlock Text="Endereço:"/>
+            <TextBox x:Name="EnderecoBox"/>
+        </StackPanel>
 
-        <TextBlock Text="Aluguel Disponível:" Grid.Row="4" Grid.Column="0" Margin="5"/>
-        <CheckBox Name="DisponivelBox" Grid.Row="4" Grid.Column="1" Margin="5" 
-                  IsChecked="True" HorizontalAlignment="Left"/>
+        <StackPanel Orientation="Vertical" Grid.Row="3" Margin="0,0,0,10">
+            <TextBlock Text="Valor Locação:"/>
+            <TextBox x:Name="ValorLocacaoBox"/>
+        </StackPanel>
 
-        <Button x:Name="SalvarButton" 
-                Content="Salvar" 
-                Grid.Row="6" 
-                Grid.ColumnSpan="2" 
-                Margin="5" 
-                Height="30" 
-                Click="Salvar_Click"/>
+        <StackPanel Orientation="Vertical" Grid.Row="4" Margin="0,0,0,10">
+            <TextBlock Text="Disponível para aluguel:"/>
+            <CheckBox x:Name="DisponivelBox" IsChecked="True"/>
+        </StackPanel>
+
+        <Button x:Name="SalvarButton" Grid.Row="5" Content="Salvar" Width="100" Height="30" 
+                HorizontalAlignment="Center" Click="Salvar_Click"/>
     </Grid>
 </Window>
