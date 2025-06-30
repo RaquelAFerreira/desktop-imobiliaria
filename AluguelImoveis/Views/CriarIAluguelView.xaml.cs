@@ -58,7 +58,7 @@ namespace AluguelImoveis.Views
         private async void Salvar_Click(object sender, RoutedEventArgs e)
         {
             // Validação inicial dos campos
-            if (!ValidarCampos())
+            if (!ValidateFields())
             {
                 return;
             }
@@ -78,11 +78,11 @@ namespace AluguelImoveis.Views
 
                 HttpResponseMessage response = await ApiService.CriarAluguelAsync(aluguel);
 
-                await ProcessarResposta(response, aluguel);
+                await ProcessResponse(response, aluguel);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro inesperado:\n{ex.Message}",
+                MessageBox.Show($"Não foi possível criar um registro de aluguel.",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
@@ -95,7 +95,7 @@ namespace AluguelImoveis.Views
             }
         }
 
-        private bool ValidarCampos()
+        private bool ValidateFields()
         {
             if (ImovelComboBox.SelectedItem == null)
             {
@@ -150,7 +150,7 @@ namespace AluguelImoveis.Views
             return true;
         }
 
-        private async Task ProcessarResposta(HttpResponseMessage response, Aluguel aluguel)
+        private async Task ProcessResponse(HttpResponseMessage response, Aluguel aluguel)
         {
             switch (response.StatusCode)
             {
@@ -174,7 +174,7 @@ namespace AluguelImoveis.Views
 
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar aluguel:\n{response.StatusCode}\n{errorContent}",
+                    MessageBox.Show($"Erro ao cadastrar aluguel!",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);

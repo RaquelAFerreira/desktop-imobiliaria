@@ -1,6 +1,7 @@
 using AluguelImoveis.Helpers;
 using AluguelImoveis.Models;
 using AluguelImoveis.Services;
+using AluguelImoveis.Services.Interfaces;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -9,16 +10,19 @@ using System.Windows;
 
 namespace AluguelImoveis.Views
 {
-    public partial class CriarLocatarioView : Window
+    public partial class CreateLocatarioView : Window
     {
-        public CriarLocatarioView()
+        private readonly ILocatarioHttpService _locatarioService;
+
+        public CreateLocatarioView(ILocatarioHttpService locatarioService)
         {
             InitializeComponent();
+            _locatarioService = locatarioService;
         }
 
         private async void Salvar_Click(object sender, RoutedEventArgs e)
         {
-            if (!ValidarCampos())
+            if (!ValidateFields())
             {
                 return;
             }
@@ -35,32 +39,24 @@ namespace AluguelImoveis.Views
                 SalvarButton.IsEnabled = false;
                 SalvarButton.Content = "Salvando...";
 
-                HttpResponseMessage response = await ApiService.CriarLocatarioAsync(locatario);
+                HttpResponseMessage response = await _locatarioService.CreateAsync(locatario);
 
-                await ProcessarResposta(response, locatario);
-            }
-            catch (HttpRequestException httpEx)
-            {
-                MessageBox.Show($"Falha na conexão com a API:\n{httpEx.Message}",
-                              "Erro de Conexão",
-                              MessageBoxButton.OK,
-                              MessageBoxImage.Error);
+                await ProcessResponse(response, locatario);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro inesperado:\n{ex.Message}",
+                MessageBox.Show($"Não foi possível criar um locatário.",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
             }
             finally
             {
-                // Reabilitar botão após a operação
                 SalvarButton.IsEnabled = true;
                 SalvarButton.Content = "Salvar";
             }
         }
-        private bool ValidarCampos()
+        private bool ValidateFields()
         {
             if (string.IsNullOrWhiteSpace(NomeCompletoBox.Text))
             {
@@ -103,7 +99,7 @@ namespace AluguelImoveis.Views
 
                 return true;
         }
-        private async Task ProcessarResposta(HttpResponseMessage response, Locatario imovel)
+        private async Task ProcessResponse(HttpResponseMessage response, Locatario imovel)
         {
             switch (response.StatusCode)
             {
@@ -118,15 +114,15 @@ namespace AluguelImoveis.Views
                     break;
 
                 case HttpStatusCode.BadRequest:
-                    var detalhesErro = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Dados inválidos:\n{detalhesErro}",
+                    var errorDetails = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Dados inválidos:\n{errorDetails}",
                                   "Erro de Validação",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Warning);
                     break;
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar locatário:\n{response.StatusCode}\n{errorContent}",
+                    MessageBox.Show($"Erro ao cadastrar locatário!",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);

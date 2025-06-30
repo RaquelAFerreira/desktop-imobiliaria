@@ -15,14 +15,21 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
-            <Button Content="Cadastrar Aluguel" Width="150" Height="30" Margin="0,0,10,0" Click="CadastrarAluguel_Click"/>
-            <ToggleButton x:Name="ToggleAtivos"
-                          Content="Mostrar Apenas Ativos"
-                          Width="140" Height="30"
-                          Background="Black" 
-                          Foreground="White" 
-                          Checked="ToggleAtivos_Checked"
-                          Unchecked="ToggleAtivos_Unchecked"/>
+            <Button Content="Cadastrar Aluguel" 
+            Width="150" 
+            Height="30" 
+            Margin="0,0,10,0" 
+            Click="CadastrarAluguel_Click"/>
+
+            <ComboBox x:Name="StatusComboBox"
+              Width="160"
+              Height="25"
+              Margin="10,0,0,0"
+              SelectionChanged="StatusComboBox_SelectionChanged">
+                <ComboBoxItem Content="Todos os contratos" Tag="todos"/>
+                <ComboBoxItem Content="Contratos vigentes" Tag="vigentes"/>
+                <ComboBoxItem Content="Contratos encerrados" Tag="encerrados"/>
+            </ComboBox>
         </StackPanel>
 
         <ListView Name="AlugueisList" Grid.Row="1">

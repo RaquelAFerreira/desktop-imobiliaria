@@ -1,20 +1,21 @@
-using AluguelImoveis.Models;
 using AluguelImoveis.Models.DTOs;
 using AluguelImoveis.Services;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace AluguelImoveis.Views
 {
     public partial class AlugueisView : Page
     {
+        private IEnumerable<AluguelDetalhadoDto> todosAlugueis;
+
         public AlugueisView()
         {
             InitializeComponent();
+            StatusComboBox.SelectedIndex = 0; // Seleciona "Todos" por padrão
             _ = LoadDataAsync();
         }
 
@@ -22,38 +23,55 @@ namespace AluguelImoveis.Views
         {
             try
             {
-                if (ToggleAtivos?.IsChecked == true)
-                {
-                    var ativos = await ApiService.GetAlugueisAtivosAsync();
-                    AlugueisList.ItemsSource = ativos;
-                }
-                else
-                {
-                    var alugueis = await ApiService.GetAlugueisAsync();
-                    AlugueisList.ItemsSource = alugueis;
-                }
+                todosAlugueis = await ApiService.GetAlugueisAsync();
+                AplicarFiltro();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar aluguéis: {ex.Message}");
+                MessageBox.Show($"Erro ao carregar aluguéis: {ex.Message}", "Erro",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void ToggleAtivos_Checked(object sender, RoutedEventArgs e)
+        private void AplicarFiltro()
         {
-            _ = LoadDataAsync();
+            if (todosAlugueis == null) return;
+
+            var alugueisFiltrados = todosAlugueis;
+            var filtroSelecionado = (StatusComboBox.SelectedItem as ComboBoxItem)?.Tag.ToString();
+
+            switch (filtroSelecionado)
+            {
+                case "vigentes":
+                    alugueisFiltrados = alugueisFiltrados
+                        .Where(a => a.DataTermino.Date >= DateTime.Today)
+                        .ToList();
+                    break;
+                case "encerrados":
+                    alugueisFiltrados = alugueisFiltrados
+                        .Where(a => a.DataTermino.Date < DateTime.Today)
+                        .ToList();
+                    break;
+                case "todos":
+                default:
+                    break;
+            }
+
+            AlugueisList.ItemsSource = alugueisFiltrados;
         }
 
-        private void ToggleAtivos_Unchecked(object sender, RoutedEventArgs e)
+        private void StatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _ = LoadDataAsync();
+            AplicarFiltro();
         }
 
         private void CadastrarAluguel_Click(object sender, RoutedEventArgs e)
         {
             var view = new CriarAluguelView();
-            view.ShowDialog();
-            _ = LoadDataAsync();
+            if (view.ShowDialog() == true)
+            {
+                _ = LoadDataAsync();
+            }
         }
 
         private async void Excluir_Click(object sender, RoutedEventArgs e)
@@ -61,7 +79,7 @@ namespace AluguelImoveis.Views
             if (sender is Button btn && btn.Tag is AluguelDetalhadoDto aluguel)
             {
                 var confirmar = MessageBox.Show(
-                    $"Deseja realmente excluir esse aluguel?",
+                    $"Deseja realmente excluir o aluguel do imóvel {aluguel.Imovel.Codigo}?",
                     "Confirmação",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning
@@ -75,14 +93,9 @@ namespace AluguelImoveis.Views
                         MessageBox.Show("Aluguel excluído com sucesso!");
                         await LoadDataAsync();
                     }
-                    catch (KeyNotFoundException ex)
-                    {
-                        MessageBox.Show(ex.Message, "Aluguel não encontrado",
-                                       MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Ocorreu um erro ao tentar excluir o aluguel.", "Erro",
+                        MessageBox.Show($"Erro ao excluir aluguel: {ex.Message}", "Erro",
                                        MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }

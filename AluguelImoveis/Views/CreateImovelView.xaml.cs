@@ -1,5 +1,6 @@
 using AluguelImoveis.Models;
 using AluguelImoveis.Services;
+using AluguelImoveis.Services.Interfaces;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -8,17 +9,18 @@ using System.Windows;
 
 namespace AluguelImoveis.Views
 {
-    public partial class CriarImovelView : Window
+    public partial class CreateImovelView : Window
     {
-        public CriarImovelView()
+        private readonly IImovelHttpService _imovelService;
+
+        public CreateImovelView(IImovelHttpService imovelService)
         {
             InitializeComponent();
+            _imovelService = imovelService;
         }
-
         private async void Salvar_Click(object sender, RoutedEventArgs e)
         {
-            // Validação inicial dos campos
-            if (!ValidarCampos())
+            if (!ValidateFields())
             {
                 return;
             }
@@ -37,9 +39,9 @@ namespace AluguelImoveis.Views
                 SalvarButton.IsEnabled = false;
                 SalvarButton.Content = "Salvando...";
 
-                HttpResponseMessage response = await ApiService.CriarImovelAsync(imovel);
+                HttpResponseMessage response = await _imovelService.CreateAsync(imovel);
 
-                await ProcessarResposta(response, imovel);
+                await ProcessResponse(response, imovel);
             }
             catch (FormatException)
             {
@@ -49,29 +51,21 @@ namespace AluguelImoveis.Views
                               MessageBoxImage.Warning);
                 ValorLocacaoBox.Focus();
             }
-            catch (HttpRequestException httpEx)
-            {
-                MessageBox.Show($"Falha na conexão com a API:\n{httpEx.Message}",
-                              "Erro de Conexão",
-                              MessageBoxButton.OK,
-                              MessageBoxImage.Error);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro inesperado:\n{ex.Message}",
+                MessageBox.Show($"Não foi possível criar um imóvel.",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
             }
             finally
             {
-                // Reabilitar botão após a operação
                 SalvarButton.IsEnabled = true;
                 SalvarButton.Content = "Salvar";
             }
         }
 
-        private bool ValidarCampos()
+        private bool ValidateFields()
         {
             if (string.IsNullOrWhiteSpace(EnderecoBox.Text))
             {
@@ -106,12 +100,12 @@ namespace AluguelImoveis.Views
             return true;
         }
 
-        private async Task ProcessarResposta(HttpResponseMessage response, Imovel imovel)
+        private async Task ProcessResponse(HttpResponseMessage response, Imovel imovel)
         {
             switch (response.StatusCode)
             {
                 case HttpStatusCode.Created:
-                    var imovelCriado = await response.Content.ReadFromJsonAsync<Imovel>();
+                    await response.Content.ReadFromJsonAsync<Imovel>();
                     MessageBox.Show($"Imóvel cadastrado com sucesso!",
                                   "Sucesso",
                                   MessageBoxButton.OK,
@@ -121,15 +115,15 @@ namespace AluguelImoveis.Views
                     break;
 
                 case HttpStatusCode.BadRequest:
-                    var detalhesErro = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Dados inválidos:\n{detalhesErro}",
+                    var errorDetails = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Dados inválidos:\n{errorDetails}",
                                   "Erro de Validação",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Warning);
                     break;
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar imóvel:\n{response.StatusCode}\n{errorContent}",
+                    MessageBox.Show($"Erro ao cadastrar imóvel!",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);

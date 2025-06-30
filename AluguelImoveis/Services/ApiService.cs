@@ -39,11 +39,6 @@ namespace AluguelImoveis.Services
             return await _client.GetFromJsonAsync<List<AluguelDetalhadoDto>>("Alugueis");
         }
 
-        public static async Task<List<AluguelDetalhadoDto>> GetAlugueisAtivosAsync()
-        {
-            return await _client.GetFromJsonAsync<List<AluguelDetalhadoDto>>("Alugueis/ativos");
-        }
-
         public static async Task<List<Imovel>> GetImoveisDisponiveisAsync()
         {
             return await _client.GetFromJsonAsync<List<Imovel>>("Imoveis/disponiveis");
@@ -73,10 +68,11 @@ namespace AluguelImoveis.Services
             response.EnsureSuccessStatusCode();
         }
 
-        public static async Task AtualizarImovelAsync(Imovel imovel)
+        public static async Task<HttpResponseMessage> AtualizarImovelAsync(Imovel imovel)
         {
             var response = await _client.PutAsJsonAsync($"Imoveis/{imovel.Id}", imovel);
             response.EnsureSuccessStatusCode();
+            return response;
         }
 
     }

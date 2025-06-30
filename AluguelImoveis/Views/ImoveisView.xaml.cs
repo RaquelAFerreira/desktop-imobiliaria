@@ -1,5 +1,6 @@
 using AluguelImoveis.Models;
 using AluguelImoveis.Services;
+using AluguelImoveis.Services.Interfaces;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,46 +9,47 @@ namespace AluguelImoveis.Views
 {
     public partial class ImoveisView : Page
     {        
-        private IEnumerable<Imovel> todosImoveis;
+        private IEnumerable<Imovel> allImoveis;
+        private readonly IImovelHttpService _imovelService;
 
-        public ImoveisView()
+        public ImoveisView(IImovelHttpService imovelService)
         {
             InitializeComponent();
+            _imovelService = imovelService;
             _ = LoadDataAsync();
         }
 
         private async Task LoadDataAsync()
         {
-            todosImoveis = await ApiService.GetImoveisAsync();
-            ImoveisList.ItemsSource = todosImoveis;
+            allImoveis = await _imovelService.GetAllAsync();
+            ImoveisList.ItemsSource = allImoveis;
         }
 
         private void Cadastrar_Click(object sender, RoutedEventArgs e)
         {
-            var form = new CriarImovelView();
+            var form = new CreateImovelView(_imovelService);
             form.ShowDialog();
             _ = LoadDataAsync();
         }
         private void Filtrar_Click(object sender, RoutedEventArgs e)
         {
-            var imoveis = todosImoveis; 
+            var imoveis = allImoveis; 
 
-            // Filtro por disponibilidade
             if (DisponivelComboBox.SelectedItem != null)
             {
-                string disponivelSelecionado = (DisponivelComboBox.SelectedItem as ComboBoxItem).Content.ToString();
+                string selectedDisponivel = (DisponivelComboBox.SelectedItem as ComboBoxItem).Content.ToString();
 
-                if (disponivelSelecionado == "Sim")
+                if (selectedDisponivel == "Sim")
                     imoveis = imoveis.Where(i => i.Disponivel).ToList();
-                else if (disponivelSelecionado == "Não")
+                else if (selectedDisponivel == "Não")
                     imoveis = imoveis.Where(i => !i.Disponivel).ToList();
             }
 
             if (TipoComboBox.SelectedItem != null)
             {
-                string tipoSelecionado = (TipoComboBox.SelectedItem as ComboBoxItem).Content.ToString();
-                if (!string.IsNullOrEmpty(tipoSelecionado))
-                    imoveis = imoveis.Where(i => i.Tipo == tipoSelecionado).ToList();
+                string selectedTipo = (TipoComboBox.SelectedItem as ComboBoxItem).Content.ToString();
+                if (!string.IsNullOrEmpty(selectedTipo))
+                    imoveis = imoveis.Where(i => i.Tipo == selectedTipo).ToList();
             }
 
             if (!string.IsNullOrEmpty(ValorMinBox.Text) && decimal.TryParse(ValorMinBox.Text, out decimal valorMin))
@@ -63,18 +65,18 @@ namespace AluguelImoveis.Views
         {
             if (sender is Button btn && btn.Tag is Imovel imovel)
             {
-                var confirmar = MessageBox.Show(
+                var confirm = MessageBox.Show(
                     $"Deseja realmente excluir o imóvel de código {imovel.Codigo}?",
                     "Confirmação",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning
                 );
 
-                if (confirmar == MessageBoxResult.Yes)
+                if (confirm == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        await ApiService.ExcluirImovelAsync(imovel.Id);
+                        await _imovelService.DeleteAsync(imovel.Id);
                         MessageBox.Show("Imóvel excluído com sucesso!");
                         await LoadDataAsync();
                     }
@@ -100,7 +102,7 @@ namespace AluguelImoveis.Views
         {
             if (sender is Button button && button.Tag is Imovel imovel)
             {
-                var editView = new EditarImovelView(imovel);
+                var editView = new UpdateImovelView(imovel, _imovelService);
                 if (editView.ShowDialog() == true)
                 {
                     _ = LoadDataAsync();

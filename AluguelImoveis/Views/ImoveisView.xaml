@@ -62,7 +62,7 @@
                     <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Endereco}" Width="250"/>
                     <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Tipo}" Width="150"/>
                     <GridViewColumn Header="Valor" DisplayMemberBinding="{Binding ValorLocacao}" Width="80"/>
-                    <GridViewColumn Header="Editar" Width="60">
+                    <GridViewColumn Header="Editar" Width="45">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="✏️" Click="Editar_Click" Tag="{Binding}" Width="30" Height="30" ToolTip="Editar"/>
