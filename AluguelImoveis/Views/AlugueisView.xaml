@@ -50,8 +50,8 @@
                     <GridViewColumn Header="Total Dias" DisplayMemberBinding="{Binding TotalDias}" Width="80"/>
                     <GridViewColumn Header="Dias Restantes" DisplayMemberBinding="{Binding DiasRestantes}" Width="100"/>
                     <GridViewColumn Header="Locatário" DisplayMemberBinding="{Binding Locatario.NomeCompleto}" Width="150"/>
-                    <GridViewColumn Header="Imóvel" DisplayMemberBinding="{Binding Imovel.Codigo}" Width="100"/>
-                    <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Imovel.Endereco}" Width="180"/>
+                    <GridViewColumn Header="Imóvel" DisplayMemberBinding="{Binding Imovel.Codigo}" Width="80"/>
+                    <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Imovel.Endereco}" Width="200"/>
                     <GridViewColumn Header="Excluir" Width="45">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate >
