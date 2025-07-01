@@ -20,8 +20,8 @@
                     Height="30" 
                     Margin="0,0,10,0" 
                     Click="Cadastrar_Click"
-                    Foreground="white"
-                    Background="#1976D2"/>
+                    Foreground="black"
+                    Background="#9fc6fc"/>
 
             <TextBlock Text="Disponível:" VerticalAlignment="Center" Margin="0,0,5,0"/>
             <ComboBox x:Name="DisponivelComboBox" Width="70" Margin="0,0,10,0" Height="25">
@@ -48,8 +48,8 @@
             <TextBox x:Name="ValorMaxBox" Width="50" Height="25" Margin="0,0,10,0"/>
 
             <Button Content="Filtrar"                                        
-                    Background="Black" 
-                    Foreground="White" 
+                    Background="#9fc6fc" 
+                    Foreground="black" 
                     Width="70" Height="30" 
                     Margin="10,0,0,0"
                     Click="Filtrar_Click"/>
@@ -82,7 +82,7 @@
                                 <Button Content="X" 
                                         Click="Excluir_Click" 
                                         Tag="{Binding}" 
-                                        Background="Red" 
+                                        Background="#ff4242" 
                                         Foreground="White" 
                                         Padding="5" 
                                         Width="30"
