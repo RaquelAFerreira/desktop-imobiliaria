@@ -26,7 +26,7 @@ namespace AluguelImoveis
                     services.AddTransient<IHttpService, HttpService>();
                     services.AddTransient<IImovelHttpService, ImovelHttpService>();
                     services.AddTransient<ILocatarioHttpService, LocatarioHttpService>();
-                    //services.AddTransient<IAluguelHttpService, AluguelHttpService>();
+                    services.AddTransient<IAluguelHttpService, AluguelHttpService>();
 
                     services.AddTransient<MainWindow>();
                     services.AddTransient<CreateImovelView>();

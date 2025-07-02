@@ -87,7 +87,7 @@ namespace AluguelImoveis.Views
                 CPFBox.Focus();
                 return false;
             }
-            else if (!ValidarCPF.CPFValido(CPFBox.Text))
+            else if (!ValidateCPF.IsValidCPF(CPFBox.Text))
             {
                 MessageBox.Show("O campo 'CPF' deve ser válido (conter 11 dígitos).",
                                 "Validação",

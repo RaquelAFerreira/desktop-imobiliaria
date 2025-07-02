@@ -5,7 +5,7 @@
       Title="Imóveis">
 
     <Page.Resources>
-        <local:ConverterBoolSimNao x:Key="SimNaoConverter" />
+        <local:BoolConverterSimNao x:Key="SimNaoConverter" />
     </Page.Resources>
 
     <Grid Margin="10">
@@ -15,7 +15,13 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
-            <Button Content="Cadastrar Imóvel" Width="150" Height="30" Margin="0,0,10,0" Click="Cadastrar_Click"/>
+            <Button Content="Cadastrar Imóvel" 
+                    Width="150" 
+                    Height="30" 
+                    Margin="0,0,10,0" 
+                    Click="Cadastrar_Click"
+                    Foreground="black"
+                    Background="#9fc6fc"/>
 
             <TextBlock Text="Disponível:" VerticalAlignment="Center" Margin="0,0,5,0"/>
             <ComboBox x:Name="DisponivelComboBox" Width="70" Margin="0,0,10,0" Height="25">
@@ -42,13 +48,14 @@
             <TextBox x:Name="ValorMaxBox" Width="50" Height="25" Margin="0,0,10,0"/>
 
             <Button Content="Filtrar"                                        
-                    Background="Black" 
-                    Foreground="White" 
+                    Background="#9fc6fc" 
+                    Foreground="black" 
                     Width="70" Height="30" 
+                    Margin="10,0,0,0"
                     Click="Filtrar_Click"/>
         </StackPanel>
 
-        <ListView Name="ImoveisList" Grid.Row="1">
+        <ListView Name="ImoveisList" Grid.Row="1" Margin="0,20,0,0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Disponível" Width="90">
@@ -59,9 +66,9 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="Código" DisplayMemberBinding="{Binding Codigo}" Width="100"/>
-                    <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Endereco}" Width="250"/>
+                    <GridViewColumn Header="Endereço" DisplayMemberBinding="{Binding Endereco}" Width="315"/>
                     <GridViewColumn Header="Tipo" DisplayMemberBinding="{Binding Tipo}" Width="150"/>
-                    <GridViewColumn Header="Valor" DisplayMemberBinding="{Binding ValorLocacao}" Width="80"/>
+                    <GridViewColumn Header="Valor" DisplayMemberBinding="{Binding ValorLocacao}" Width="90"/>
                     <GridViewColumn Header="Editar" Width="45">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -75,7 +82,7 @@
                                 <Button Content="X" 
                                         Click="Excluir_Click" 
                                         Tag="{Binding}" 
-                                        Background="Red" 
+                                        Background="#ff4242" 
                                         Foreground="White" 
                                         Padding="5" 
                                         Width="30"

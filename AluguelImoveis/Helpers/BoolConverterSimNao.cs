@@ -3,7 +3,7 @@ using System.Windows.Data;
 
 namespace AluguelImoveis.Converters
 {
-    internal class ConverterBoolSimNao : IValueConverter
+    internal class BoolConverterSimNao : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

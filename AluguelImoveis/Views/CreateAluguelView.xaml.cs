@@ -1,5 +1,7 @@
 using AluguelImoveis.Models;
+using AluguelImoveis.Models.DTOs;
 using AluguelImoveis.Services;
+using AluguelImoveis.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +13,19 @@ using System.Windows;
 
 namespace AluguelImoveis.Views
 {
-    public partial class CriarAluguelView : Window
+    public partial class CreateAluguelView : Window
     {
-        public CriarAluguelView()
+        private readonly IAluguelHttpService _aluguelService;
+        private readonly IImovelHttpService _imovelService;
+        private readonly ILocatarioHttpService _locatarioService;
+
+        public CreateAluguelView(IAluguelHttpService aluguelService, IImovelHttpService imovelService, ILocatarioHttpService locatarioService)
         {
             InitializeComponent();
+            _aluguelService = aluguelService;
+            _imovelService = imovelService;
+            _locatarioService = locatarioService;
+
             _ = CarregarDadosAsync();
         }
 
@@ -23,14 +33,14 @@ namespace AluguelImoveis.Views
         {
             try
             {
-                var imoveis = await ApiService.GetImoveisDisponiveisAsync();
+                var imoveis = await _imovelService.GetDisponiveisAsync();
                 ImovelComboBox.ItemsSource = imoveis.Select(i => new
                 {
                     Id = i.Id,
                     Descricao = i.Codigo
                 }).ToList();
 
-                var locatarios = await ApiService.GetLocatariosAsync();
+                var locatarios = await _locatarioService.GetAllAsync();
                 LocatarioComboBox.ItemsSource = locatarios.Select(l => new
                 {
                     Id = l.Id,
@@ -76,7 +86,7 @@ namespace AluguelImoveis.Views
                 SalvarButton.IsEnabled = false;
                 SalvarButton.Content = "Salvando...";
 
-                HttpResponseMessage response = await ApiService.CriarAluguelAsync(aluguel);
+                HttpResponseMessage response = await _aluguelService.CreateAsync(aluguel);
 
                 await ProcessResponse(response, aluguel);
             }
@@ -165,8 +175,8 @@ namespace AluguelImoveis.Views
                     break;
 
                 case HttpStatusCode.BadRequest:
-                    var detalhesErro = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Dados inválidos:\n{detalhesErro}",
+                    var errorDetails = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Dados inválidos:\n{errorDetails}",
                                   "Erro de Validação",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Warning);

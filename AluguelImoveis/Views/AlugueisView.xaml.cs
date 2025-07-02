@@ -1,5 +1,6 @@
 using AluguelImoveis.Models.DTOs;
 using AluguelImoveis.Services;
+using AluguelImoveis.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,17 @@ namespace AluguelImoveis.Views
 {
     public partial class AlugueisView : Page
     {
-        private IEnumerable<AluguelDetalhadoDto> todosAlugueis;
+        private IEnumerable<AluguelDetalhadoDto> allAlugueis;
+        private readonly IAluguelHttpService _aluguelService;
+        private readonly IImovelHttpService _imovelService;
+        private readonly ILocatarioHttpService _locatarioService;
 
-        public AlugueisView()
+        public AlugueisView(IAluguelHttpService aluguelService, IImovelHttpService imovelService, ILocatarioHttpService locatarioService)
         {
             InitializeComponent();
+            _aluguelService = aluguelService;
+            _imovelService = imovelService;
+            _locatarioService = locatarioService;
             StatusComboBox.SelectedIndex = 0; // Seleciona "Todos" por padrão
             _ = LoadDataAsync();
         }
@@ -23,7 +30,7 @@ namespace AluguelImoveis.Views
         {
             try
             {
-                todosAlugueis = await ApiService.GetAlugueisAsync();
+                allAlugueis = await _aluguelService.GetAllAsync();
                 AplicarFiltro();
             }
             catch (Exception ex)
@@ -35,9 +42,9 @@ namespace AluguelImoveis.Views
 
         private void AplicarFiltro()
         {
-            if (todosAlugueis == null) return;
+            if (allAlugueis == null) return;
 
-            var alugueisFiltrados = todosAlugueis;
+            var alugueisFiltrados = allAlugueis;
             var filtroSelecionado = (StatusComboBox.SelectedItem as ComboBoxItem)?.Tag.ToString();
 
             switch (filtroSelecionado)
@@ -67,7 +74,7 @@ namespace AluguelImoveis.Views
 
         private void CadastrarAluguel_Click(object sender, RoutedEventArgs e)
         {
-            var view = new CriarAluguelView();
+            var view = new CreateAluguelView(_aluguelService, _imovelService, _locatarioService);
             if (view.ShowDialog() == true)
             {
                 _ = LoadDataAsync();
@@ -89,7 +96,7 @@ namespace AluguelImoveis.Views
                 {
                     try
                     {
-                        await ApiService.ExcluirAluguelAsync(aluguel.AluguelId);
+                        await _aluguelService.DeleteAsync(aluguel.AluguelId);
                         MessageBox.Show("Aluguel excluído com sucesso!");
                         await LoadDataAsync();
                     }
