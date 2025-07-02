@@ -11,7 +11,7 @@ namespace AluguelImoveis.Views
 {
     public partial class AlugueisView : Page
     {
-        private IEnumerable<AluguelDetalhadoDto> allAlugueis;
+        private IEnumerable<AluguelDto> allAlugueis;
         private readonly IAluguelHttpService _aluguelService;
         private readonly IImovelHttpService _imovelService;
         private readonly ILocatarioHttpService _locatarioService;
@@ -83,7 +83,7 @@ namespace AluguelImoveis.Views
 
         private async void Excluir_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is AluguelDetalhadoDto aluguel)
+            if (sender is Button btn && btn.Tag is AluguelDto aluguel)
             {
                 var confirmar = MessageBox.Show(
                     $"Deseja realmente excluir o aluguel do imóvel {aluguel.Imovel.Codigo}?",

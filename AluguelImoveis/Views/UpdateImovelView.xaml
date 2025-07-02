@@ -1,10 +1,9 @@
 <Window x:Class="AluguelImoveis.Views.UpdateImovelView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Editar Imóvel" Height="350" Width="400" WindowStartupLocation="CenterScreen">
+        Title="Cadastrar Imóvel" Height="300" Width="400" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -12,12 +11,28 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Código:"/>
-            <TextBox x:Name="CodigoBox"/>
-        </StackPanel>
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,0,0,10">
+            <StackPanel Grid.Column="0" Orientation="Vertical">
+                <TextBlock Text="Código:"/>
+                <TextBox MaxLength="10" x:Name="CodigoBox"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Orientation="Vertical">
+                <TextBlock Text="Valor Locação (R$):"/>
+                <TextBox x:Name="ValorLocacaoBox"
+                         MaxLength="10"
+                         PreviewTextInput="ValorLocacaoBox_PreviewTextInput"
+                         DataObject.Pasting="ValorLocacaoBox_Pasting"/>
+            </StackPanel>
+        </Grid>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,0,0,10">
             <TextBlock Text="Tipo:"/>
             <ComboBox x:Name="TipoBox">
                 <ComboBoxItem Content="Apartamento"/>
@@ -29,22 +44,18 @@
             </ComboBox>
         </StackPanel>
 
-        <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,0,0,10">
+        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="0,0,0,10">
             <TextBlock Text="Endereço:"/>
-            <TextBox x:Name="EnderecoBox"/>
+            <TextBox x:Name="EnderecoBox" MaxLength="100"/>
         </StackPanel>
 
-        <StackPanel Orientation="Vertical" Grid.Row="3" Margin="0,0,0,10">
-            <TextBlock Text="Valor Locação:"/>
-            <TextBox x:Name="ValorLocacaoBox"/>
-        </StackPanel>
-
-        <StackPanel Orientation="Vertical" Grid.Row="4" Margin="0,0,0,10">
+        <StackPanel Grid.Row="3" Orientation="Vertical" Margin="0,0,0,10">
             <TextBlock Text="Disponível para aluguel:"/>
-            <CheckBox x:Name="DisponivelBox"/>
+            <CheckBox x:Name="DisponivelBox" IsChecked="True" HorizontalAlignment="Left"/>
         </StackPanel>
 
-        <Button x:Name="SalvarButton" Grid.Row="5" Content="Salvar" Width="100" Height="30" 
-                HorizontalAlignment="Center" Click="Salvar_Click"/>
+        <Button Grid.Row="5" x:Name="SalvarButton" Content="Salvar" 
+                Width="100" Height="30" HorizontalAlignment="Center"
+                Margin="0,0,0,0" Click="Salvar_Click"/>
     </Grid>
 </Window>

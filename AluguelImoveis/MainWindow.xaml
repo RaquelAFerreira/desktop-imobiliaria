@@ -29,18 +29,21 @@
                             Click="Locatarios_Click" 
                             Width="100" Height="29"
                             Background="white"
+                            x:Name="BtnLocatarios"
                             />
                     <Button Content="Imóveis" 
                             Margin="5,0" 
                             Click="Imoveis_Click" 
                             Width="100"
                             Background="white"
+                            x:Name="BtnImoveis"
                             />
                     <Button Content="Aluguéis" 
                             Margin="5,0" 
                             Click="Alugueis_Click" 
                             Width="100"
                             Background="white"
+                            x:Name="BtnAlugueis"
                             />
                 </StackPanel>
             </Grid>

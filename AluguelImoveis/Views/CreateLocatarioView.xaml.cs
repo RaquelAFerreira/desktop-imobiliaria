@@ -1,12 +1,13 @@
 using AluguelImoveis.Helpers;
 using AluguelImoveis.Models;
-using AluguelImoveis.Services;
 using AluguelImoveis.Services.Interfaces;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace AluguelImoveis.Views
 {
@@ -32,7 +33,7 @@ namespace AluguelImoveis.Views
                 var locatario = new Locatario
                 {
                     NomeCompleto = NomeCompletoBox.Text.Trim(),
-                    Telefone = Regex.Replace(TelefoneBox.Text, @"[^\d]", ""),
+                    Telefone = TelefoneBox.Text,
                     CPF = Regex.Replace(CPFBox.Text, @"[^\d]", "")
                 };
 
@@ -45,7 +46,7 @@ namespace AluguelImoveis.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Não foi possível criar um locatário.",
+                MessageBox.Show($"Não foi possível criar um locatário.\n{ex.Message}",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
@@ -68,7 +69,7 @@ namespace AluguelImoveis.Views
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(TelefoneBox.Text) || !Regex.IsMatch(TelefoneBox.Text, @"^\d+$"))
+            if (string.IsNullOrWhiteSpace(TelefoneBox.Text))
             {
                 MessageBox.Show("O campo 'Telefone' é obrigatório.",
                               "Validação",
@@ -77,8 +78,17 @@ namespace AluguelImoveis.Views
                 TelefoneBox.Focus();
                 return false;
             }
+            else if (!ValidatePhoneNumber.IsValidPhoneNumber(TelefoneBox.Text))
+            {
+                MessageBox.Show("Digite um telefone válido.",
+                                "Validação",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                TelefoneBox.Focus();
+                return false;
+            }
 
-            if (string.IsNullOrWhiteSpace(CPFBox.Text) || !Regex.IsMatch(CPFBox.Text, @"^\d+$"))
+            if (string.IsNullOrWhiteSpace(CPFBox.Text))
             {
                 MessageBox.Show("O campo 'CPF' é obrigatório.",
                                 "Validação",
@@ -93,7 +103,7 @@ namespace AluguelImoveis.Views
                                 "Validação",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Warning);
-                                CPFBox.Focus();
+                CPFBox.Focus();
                 return false;
             }
 
@@ -122,12 +132,44 @@ namespace AluguelImoveis.Views
                     break;
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar locatário!",
+                    MessageBox.Show($"Erro ao cadastrar locatário!\n{errorContent}",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);
                     break;
             }
         }
+
+        private void TelefoneBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            ValidatePhoneNumber.Phone_PreviewTextInput(sender, e);
+        }
+
+        private void TelefoneBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidatePhoneNumber.Phone_TextChanged(sender, e);
+        }
+
+        private void TelefoneBox_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            ValidatePhoneNumber.Phone_Pasting(sender, e);
+        }
+
+        private void CpfBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            ValidateCPF.Cpf_PreviewTextInput(sender, e);
+        }
+
+        private void CpfBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ValidateCPF.Cpf_TextChanged(sender, e);
+        }
+
+        private void CpfBox_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            ValidateCPF.Cpf_Pasting(sender, e);
+        }
+
+
     }
 }

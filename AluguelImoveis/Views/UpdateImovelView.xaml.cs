@@ -1,11 +1,12 @@
+using AluguelImoveis.Helpers;
 using AluguelImoveis.Models;
-using AluguelImoveis.Services;
 using AluguelImoveis.Services.Interfaces;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace AluguelImoveis.Views
 {
@@ -63,7 +64,7 @@ namespace AluguelImoveis.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Não foi possível atualizar o imóvel.",
+                MessageBox.Show($"Não foi possível atualizar o imóvel.\n{ex.Message}",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
@@ -152,12 +153,22 @@ namespace AluguelImoveis.Views
 
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao atualizar imóvel!",
+                    MessageBox.Show($"Erro ao atualizar imóvel!\n{errorContent}",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);
                     break;
             }
+        }
+
+        private void ValorLocacaoBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            ValidateDecimal.DecimalOnly_PreviewTextInput(sender, e);
+        }
+
+        private void ValorLocacaoBox_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            ValidateDecimal.DecimalOnly_Pasting(sender, e);
         }
     }
 }
