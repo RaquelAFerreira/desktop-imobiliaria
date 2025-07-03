@@ -1,6 +1,7 @@
 <Window x:Class="AluguelImoveis.Views.CreateLocatarioView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        ResizeMode="NoResize"
         Title="Cadastrar Locatário" Height="250" Width="400" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>

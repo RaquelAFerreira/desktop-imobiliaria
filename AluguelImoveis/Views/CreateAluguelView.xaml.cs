@@ -117,7 +117,7 @@ namespace AluguelImoveis.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Não foi possível criar um registro de aluguel.",
+                MessageBox.Show($"Não foi possível criar um registro de aluguel.\n{ex.Message}",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);

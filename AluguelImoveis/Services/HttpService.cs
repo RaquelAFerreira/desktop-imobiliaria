@@ -51,21 +51,17 @@ namespace AluguelImoveis.Services
             var content = await response.Content.ReadAsStringAsync();
             string errorMessage = "Erro ao chamar a API.";
 
-            try
-            {
-                using var json = JsonDocument.Parse(content);
-                var root = json.RootElement;
+            // Tenta interpretar como JSON
+            using var json = JsonDocument.Parse(content);
+            var root = json.RootElement;
 
-                if (root.TryGetProperty("message", out var msg))
-                    errorMessage = msg.GetString();
-                else if (root.TryGetProperty("detail", out var detail))
-                    errorMessage = detail.GetString();
-                else if (!string.IsNullOrWhiteSpace(content))
-                    errorMessage = content;
-            }
-            catch
-            {
-            }
+            if (root.TryGetProperty("message", out var msg))
+                errorMessage = msg.GetString();
+            else if (root.TryGetProperty("detail", out var detail))
+                errorMessage = detail.GetString();
+            else if (!string.IsNullOrWhiteSpace(content))
+                errorMessage = content;
+
 
             throw new ApplicationException(errorMessage);
         }
