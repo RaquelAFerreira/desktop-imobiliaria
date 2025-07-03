@@ -26,10 +26,10 @@ namespace AluguelImoveis.Views
             _imovelService = imovelService;
             _locatarioService = locatarioService;
 
-            _ = CarregarDadosAsync();
+            _ = LoadDataAsync();
         }
 
-        private async Task CarregarDadosAsync()
+        private async Task LoadDataAsync()
         {
             try
             {

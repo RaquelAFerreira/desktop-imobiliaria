@@ -78,7 +78,6 @@ namespace AluguelImoveis.Helpers
         private static int CalculateCaretIndex(string formatted, int digitsCount)
         {
             // Garante que o cursor fique no fim dos dígitos válidos
-            // Exemplo: digitar 5 números -> cursor após o 5º número
             int count = 0;
             for (int i = 0; i < formatted.Length; i++)
             {

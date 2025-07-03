@@ -31,7 +31,7 @@ namespace AluguelImoveis.Views
             try
             {
                 allAlugueis = await _aluguelService.GetAllAsync();
-                AplicarFiltro();
+                ApllyFilter();
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace AluguelImoveis.Views
             }
         }
 
-        private void AplicarFiltro()
+        private void ApllyFilter()
         {
             if (allAlugueis == null) return;
 
@@ -69,7 +69,7 @@ namespace AluguelImoveis.Views
 
         private void StatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AplicarFiltro();
+            ApllyFilter();
         }
 
         private void CadastrarAluguel_Click(object sender, RoutedEventArgs e)
