@@ -39,4 +39,4 @@ Aplicação desktop desenvolvida em C# com WPF para gerenciamento de aluguel de 
 
 - [Manual do sistema](Docs/manual.pdf)
 - Criação de comandos no banco de dados
-- [Execução do back-end](https://github.com/RaquelAFerreira/api-imobiliaria
+- [Execução do back-end](https://github.com/RaquelAFerreira/api-imobiliaria)
