@@ -79,7 +79,7 @@ namespace AluguelImoveis.Views
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Ocorreu um erro ao tentar excluir o locatário.", "Erro",
+                        MessageBox.Show($"Ocorreu um erro ao tentar excluir o locatário.\n{ex.Message}", "Erro",
                                        MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }

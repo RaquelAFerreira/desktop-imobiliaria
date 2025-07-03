@@ -1,6 +1,7 @@
 <Window x:Class="AluguelImoveis.Views.CreateAluguelView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        ResizeMode="NoResize"
         Title="Novo Aluguel" Height="300" Width="400" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>

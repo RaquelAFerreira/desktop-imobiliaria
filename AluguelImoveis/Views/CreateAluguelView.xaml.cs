@@ -26,26 +26,51 @@ namespace AluguelImoveis.Views
             _imovelService = imovelService;
             _locatarioService = locatarioService;
 
-            _ = CarregarDadosAsync();
+            _ = LoadDataAsync();
         }
 
-        private async Task CarregarDadosAsync()
+        private async Task LoadDataAsync()
         {
             try
             {
                 var imoveis = await _imovelService.GetDisponiveisAsync();
-                ImovelComboBox.ItemsSource = imoveis.Select(i => new
+                if (imoveis == null || !imoveis.Any())
                 {
-                    Id = i.Id,
-                    Descricao = i.Codigo
-                }).ToList();
+                    MessageBox.Show("Não há imóveis disponíveis para aluguel no momento.",
+                                  "Informação",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Information);
+                    ImovelComboBox.IsEnabled = false;
+                }
+                else
+                {
+                    ImovelComboBox.ItemsSource = imoveis.Select(i => new
+                    {
+                        Id = i.Id,
+                        Descricao = i.Codigo
+                    }).ToList();
+                }
 
                 var locatarios = await _locatarioService.GetAllAsync();
-                LocatarioComboBox.ItemsSource = locatarios.Select(l => new
+                if (locatarios == null || !locatarios.Any())
                 {
-                    Id = l.Id,
-                    Descricao = $"{l.CPF} - {l.NomeCompleto}"
-                }).ToList();
+                    MessageBox.Show("Não há locatários cadastrados no sistema.",
+                                  "Informação",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Information);
+                    LocatarioComboBox.IsEnabled = false;
+                }
+                else
+                {
+                    LocatarioComboBox.ItemsSource = locatarios.Select(l => new
+                    {
+                        Id = l.Id,
+                        Descricao = $"{l.CPF} - {l.NomeCompleto}"
+                    }).ToList();
+                }
+
+                // Desabilitar botão de salvar se não houver imóveis ou locatários
+                SalvarButton.IsEnabled = ImovelComboBox.IsEnabled && LocatarioComboBox.IsEnabled;
             }
             catch (HttpRequestException httpEx)
             {
@@ -92,7 +117,7 @@ namespace AluguelImoveis.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Não foi possível criar um registro de aluguel.",
+                MessageBox.Show($"Não foi possível criar um registro de aluguel.\n{ex.Message}",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
@@ -107,6 +132,24 @@ namespace AluguelImoveis.Views
 
         private bool ValidateFields()
         {
+            if (!ImovelComboBox.IsEnabled)
+            {
+                MessageBox.Show("Não há imóveis disponíveis para seleção.",
+                              "Validação",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (!LocatarioComboBox.IsEnabled)
+            {
+                MessageBox.Show("Não há locatários disponíveis para seleção.",
+                              "Validação",
+                              MessageBoxButton.OK,
+                              MessageBoxImage.Warning);
+                return false;
+            }
+
             if (ImovelComboBox.SelectedItem == null)
             {
                 MessageBox.Show("Selecione um imóvel.",
@@ -184,7 +227,7 @@ namespace AluguelImoveis.Views
 
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar aluguel!",
+                    MessageBox.Show($"Erro ao cadastrar aluguel!\n{errorContent}",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);

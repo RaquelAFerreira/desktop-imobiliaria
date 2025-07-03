@@ -11,30 +11,33 @@
     <Grid Margin="10" RenderTransformOrigin="0.5,0.507">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
             <Button Content="Cadastrar Aluguel" 
-            Width="150" 
-            Height="30" 
-            Margin="0,0,10,0" 
-            Click="CadastrarAluguel_Click"
-            Foreground="black"
-            Background="#9fc6fc"/>
+                    Width="150" 
+                    Height="30" 
+                    Click="CadastrarAluguel_Click"
+                    Foreground="black"
+                    Background="#bad7ff"/>
+        </StackPanel>
 
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="1">
             <ComboBox x:Name="StatusComboBox"
-              Width="160"
-              Height="25"
-              Margin="10,0,0,0"
-              SelectionChanged="StatusComboBox_SelectionChanged">
+                      Width="160"
+                      Height="25"
+                      SelectionChanged="StatusComboBox_SelectionChanged">
                 <ComboBoxItem Content="Todos os contratos" Tag="todos"/>
                 <ComboBoxItem Content="Contratos vigentes" Tag="vigentes"/>
                 <ComboBoxItem Content="Contratos encerrados" Tag="encerrados"/>
             </ComboBox>
         </StackPanel>
 
-        <ListView Name="AlugueisList" Grid.Row="1" Margin="0,20,0,0">
+        <ListView Name="AlugueisList" Grid.Row="2" Margin="0,20,0,0"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Início" Width="90">

@@ -1,11 +1,14 @@
 using AluguelImoveis.Models;
-using AluguelImoveis.Services;
+using AluguelImoveis.Helpers;
 using AluguelImoveis.Services.Interfaces;
 using System;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace AluguelImoveis.Views
 {
@@ -25,6 +28,8 @@ namespace AluguelImoveis.Views
                 return;
             }
 
+            string valor = ValorLocacaoBox.Text.Replace(',', '.');
+
             try
             {
                 var imovel = new Imovel
@@ -32,7 +37,7 @@ namespace AluguelImoveis.Views
                     Codigo = CodigoBox.Text,
                     Tipo = TipoBox.Text,
                     Endereco = EnderecoBox.Text.Trim(),
-                    ValorLocacao = decimal.Parse(ValorLocacaoBox.Text),
+                    ValorLocacao = decimal.Parse(valor, CultureInfo.InvariantCulture),
                     Disponivel = DisponivelBox.IsChecked ?? true
                 };
 
@@ -53,7 +58,7 @@ namespace AluguelImoveis.Views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Não foi possível criar um imóvel.",
+                MessageBox.Show($"Não foi possível criar um imóvel.\n{ex.Message}",
                               "Erro",
                               MessageBoxButton.OK,
                               MessageBoxImage.Error);
@@ -87,7 +92,7 @@ namespace AluguelImoveis.Views
                 return false;
             }
 
-            if (!decimal.TryParse(ValorLocacaoBox.Text, out _) || decimal.Parse(ValorLocacaoBox.Text) <= 0)
+            if (!decimal.TryParse(ValorLocacaoBox.Text, out _))
             {
                 MessageBox.Show("Insira um valor válido para locação (maior que zero).",
                               "Validação",
@@ -123,12 +128,23 @@ namespace AluguelImoveis.Views
                     break;
                 default:
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Erro ao cadastrar imóvel!",
+                    MessageBox.Show($"Erro ao cadastrar imóvel!\n{errorContent}",
                                   "Erro na API",
                                   MessageBoxButton.OK,
                                   MessageBoxImage.Error);
                     break;
             }
         }
+
+        private void ValorLocacaoBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            ValidateDecimal.DecimalOnly_PreviewTextInput(sender, e);
+        }
+
+        private void ValorLocacaoBox_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            ValidateDecimal.DecimalOnly_Pasting(sender, e);
+        }
+
     }
 }

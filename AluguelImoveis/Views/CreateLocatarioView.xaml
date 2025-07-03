@@ -1,6 +1,7 @@
 <Window x:Class="AluguelImoveis.Views.CreateLocatarioView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        ResizeMode="NoResize"
         Title="Cadastrar Locatário" Height="250" Width="400" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -13,17 +14,24 @@
 
         <StackPanel Orientation="Vertical" Grid.Row="0" Margin="0,0,0,10">
             <TextBlock Text="Nome Completo:"/>
-            <TextBox x:Name="NomeCompletoBox"/>
+            <TextBox x:Name="NomeCompletoBox" MaxLength="100"/>
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,0,0,10">
             <TextBlock Text="Telefone:"/>
-            <TextBox x:Name="TelefoneBox"/>
+            <TextBox x:Name="TelefoneBox" MaxLength="15"
+                    PreviewTextInput="TelefoneBox_PreviewTextInput"
+                    TextChanged="TelefoneBox_TextChanged"
+                    DataObject.Pasting="TelefoneBox_Pasting" />
         </StackPanel>
 
         <StackPanel Orientation="Vertical" Grid.Row="2" Margin="0,0,0,10">
             <TextBlock Text="CPF:"/>
-            <TextBox x:Name="CPFBox"/>
+            <TextBox x:Name="CPFBox"
+                     PreviewTextInput="CpfBox_PreviewTextInput"
+                     TextChanged="CpfBox_TextChanged"
+                     DataObject.Pasting="CpfBox_Pasting"
+                     MaxLength="14" />
         </StackPanel>
 
         <Button x:Name="SalvarButton" Grid.Row="4" Content="Salvar" Width="100" Height="30" 

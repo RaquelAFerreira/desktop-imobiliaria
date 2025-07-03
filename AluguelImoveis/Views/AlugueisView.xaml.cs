@@ -11,7 +11,7 @@ namespace AluguelImoveis.Views
 {
     public partial class AlugueisView : Page
     {
-        private IEnumerable<AluguelDetalhadoDto> allAlugueis;
+        private IEnumerable<AluguelDto> allAlugueis;
         private readonly IAluguelHttpService _aluguelService;
         private readonly IImovelHttpService _imovelService;
         private readonly ILocatarioHttpService _locatarioService;
@@ -31,7 +31,7 @@ namespace AluguelImoveis.Views
             try
             {
                 allAlugueis = await _aluguelService.GetAllAsync();
-                AplicarFiltro();
+                ApllyFilter();
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace AluguelImoveis.Views
             }
         }
 
-        private void AplicarFiltro()
+        private void ApllyFilter()
         {
             if (allAlugueis == null) return;
 
@@ -69,7 +69,7 @@ namespace AluguelImoveis.Views
 
         private void StatusComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AplicarFiltro();
+            ApllyFilter();
         }
 
         private void CadastrarAluguel_Click(object sender, RoutedEventArgs e)
@@ -83,7 +83,7 @@ namespace AluguelImoveis.Views
 
         private async void Excluir_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is AluguelDetalhadoDto aluguel)
+            if (sender is Button btn && btn.Tag is AluguelDto aluguel)
             {
                 var confirmar = MessageBox.Show(
                     $"Deseja realmente excluir o aluguel do imóvel {aluguel.Imovel.Codigo}?",

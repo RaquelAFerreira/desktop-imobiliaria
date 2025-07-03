@@ -13,8 +13,8 @@ public class AluguelHttpService : IAluguelHttpService
         _httpService = httpService;
     }
 
-    public Task<List<AluguelDetalhadoDto>> GetAllAsync() =>
-        _httpService.GetAsync<List<AluguelDetalhadoDto>>(Endpoint);
+    public Task<List<AluguelDto>> GetAllAsync() =>
+        _httpService.GetAsync<List<AluguelDto>>(Endpoint);
 
     public Task<HttpResponseMessage> CreateAsync(Aluguel aluguel) =>
         _httpService.PostAsync(Endpoint, aluguel);

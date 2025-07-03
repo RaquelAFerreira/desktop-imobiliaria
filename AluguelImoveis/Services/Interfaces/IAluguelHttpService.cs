@@ -4,7 +4,7 @@ using System.Net.Http;
 
 public interface IAluguelHttpService
 {
-    Task<List<AluguelDetalhadoDto>> GetAllAsync();
+    Task<List<AluguelDto>> GetAllAsync();
     Task<HttpResponseMessage> CreateAsync(Aluguel aluguel);
     Task DeleteAsync(Guid id);
 }
