@@ -23,4 +23,4 @@ Aplicação desktop desenvolvida em C# com WPF para gerenciamento de aluguel de 
 1. Clone ou extraia o repositório em sua máquina:
 
    ```bash
-   git clone 
+   git clone https://github.com/RaquelAFerreira/desktop-imobiliaria.git
