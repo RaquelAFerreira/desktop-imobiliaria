@@ -23,7 +23,7 @@ Aplicação desktop desenvolvida em C# com WPF para gerenciamento de aluguel de 
    git clone https://github.com/RaquelAFerreira/desktop-imobiliaria.git
    ```
    
-1. Tenha o [back-end](https://github.com/RaquelAFerreira/api-imobiliaria) rodando na porta 5287.
+1. Tenha o [back-end](https://github.com/RaquelAFerreira/api-imobiliaria) rodando em localhost na porta 5287.
 
 2. Abra o arquivo de solução AluguelImoveis.sln com o Visual Studio.
 
@@ -33,7 +33,7 @@ Aplicação desktop desenvolvida em C# com WPF para gerenciamento de aluguel de 
 
 Ou 
 
-1. Execute o executável.
+1. [Execute o executável.](Docs/AluguelImoveis.exe)
 
 ### Documentações
 
