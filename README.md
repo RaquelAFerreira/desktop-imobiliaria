@@ -33,7 +33,7 @@ Aplicação desktop desenvolvida em C# com WPF para gerenciamento de aluguel de 
 
 Ou 
 
-1. [Execute o executável.](Docs/AluguelImoveis.exe)
+2. [Execute o executável.](Docs/AluguelImoveis.exe)
 
 ### Documentações
 
